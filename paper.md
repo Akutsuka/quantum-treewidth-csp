@@ -2,7 +2,7 @@
 
 ---
 
-**Abstract.** We investigate how classical problem structure — measured by treewidth (width parameters of constraint hypergraphs) and constraint-language algebra (polymorphisms, Schaefer-type dichotomies) — interacts with quantum amplitude amplification for constraint satisfaction problems (CSPs). We establish seven results. *First* (Proposition 1), in the polynomial-space regime, quantum backtracking (Montanaro 2018) achieves a quadratic speedup over classical recursion for treewidth-*w* CSPs over domain *d*: the dominant exponent halves from (*w*+1)·log *d* to (*w*+1)·(log *d*)/2. *Second* (Theorem 1, the Memoization Obstruction), in the exponential-space regime, this quantum algorithm is *asymptotically slower* than classical memoized dynamic programming for all *d* ≥ 3, *w* ≥ 1. *Third* (Proposition 2), we adapt the Ambainis et al. (SODA 2019) precomputation/Grover hybrid to tree-decomposition DP, identifying a regime-dependent speedup. *Fourth*, we explain the Schöning-vs-PPSZ quantization asymmetry structurally: algorithms whose randomness is "oracle-shaped" quantize cleanly; those whose randomness is "process-shaped" resist. *Fifth* (Theorem 2, the Simulability Barrier), any quantum circuit whose interaction graph has treewidth O(*w*) is classically simulable in time 2^{O(*w*)} · poly(*n*), erasing quantum advantage precisely when structure is strongest. *Sixth* (Theorem 3, QSETH Lower Bound), we prove conditionally that the exponent constant *c* in O\*(*d*^{*cw*}) satisfies *c* ≥ 1/2: no quantum algorithm can solve primal-pathwidth-parameterized SAT in time O\*((√2 − ε)^{pw}). *Seventh*, we analyze the naïve recursive Grover strategy on tree decompositions, showing it achieves *c* = 1/2 for depth-1 (star) decompositions (Proposition 3) but is provably slower than classical memoized DP at depth *D* ≥ 2 (Analysis 1). This motivates the **Gap Conjecture**: for general tree decompositions, the optimal quantum exponent *c* lies in [1/2, 1], with *c* = 1/2 tight at depth 1 (matching the QSETH lower bound) and *c* = 1 the best known for *D* ≥ 2. We carefully separate the conditional theorem (about all quantum algorithms) from the analysis (about one specific strategy) and the conjecture (about the optimal *c*). The gap is explained by an OR/AND asymmetry in tree-decomposition DP: Grover accelerates the OR (forget/search) operations but leaves the AND (join/verify) operations unchanged, and the compounding AND costs overwhelm the OR savings once decomposition depth exceeds 1.
+**Abstract.** We investigate how classical problem structure — measured by treewidth (width parameters of constraint hypergraphs) and constraint-language algebra (polymorphisms, Schaefer-type dichotomies) — interacts with quantum amplitude amplification for constraint satisfaction problems (CSPs). We establish seven results. *First* (Proposition 1), in the polynomial-space regime, quantum backtracking (Montanaro 2018) achieves a quadratic speedup over classical recursion for treewidth-*w* CSPs over domain *d*: the dominant exponent halves from (*w*+1)·log *d* to (*w*+1)·(log *d*)/2. *Second* (Theorem 1, the Memoization Obstruction), in the exponential-space regime, this quantum algorithm is *asymptotically slower* than classical memoized dynamic programming for all *d* ≥ 3, *w* ≥ 1. *Third* (Proposition 2), we adapt the Ambainis et al. (SODA 2019) precomputation/Grover hybrid to tree-decomposition DP, identifying a regime-dependent speedup. *Fourth* (Theorem 2, Universal Quadratic Speedup), we prove that *all* classical randomized SAT algorithms with poly-time trials admit full quadratic quantum speedup via amplitude amplification — correcting an earlier informal classification — and show as a corollary that quantum PPSZ achieves O\*(1.143^*n*) for 3-SAT, beating quantum Schöning. *Fifth* (Observation 3, the Simulability Barrier), any quantum circuit whose interaction graph has treewidth O(*w*) is classically simulable in time 2^{O(*w*)} · poly(*n*), erasing quantum advantage precisely when structure is strongest. *Sixth* (Theorem 3, QSETH Lower Bound), we prove conditionally that the exponent constant *c* in O\*(*d*^{*cw*}) satisfies *c* ≥ 1/2: no quantum algorithm can solve primal-pathwidth-parameterized SAT in time O\*((√2 − ε)^{pw}). *Seventh*, we analyze the naïve recursive Grover strategy on tree decompositions, showing it achieves *c* = 1/2 for depth-1 (star) decompositions (Proposition 3) but is provably slower than classical memoized DP at depth *D* ≥ 2 (Analysis 1). This motivates the **Gap Conjecture**: for general tree decompositions, the optimal quantum exponent *c* lies in [1/2, 1], with *c* = 1/2 tight at depth 1 (matching the QSETH lower bound) and *c* = 1 the best known for *D* ≥ 2. We carefully separate the conditional theorem (about all quantum algorithms) from the analysis (about one specific strategy) and the conjecture (about the optimal *c*). The gap is explained by an OR/AND asymmetry in tree-decomposition DP: Grover accelerates the OR (forget/search) operations but leaves the AND (join/verify) operations unchanged, and the compounding AND costs overwhelm the OR savings once decomposition depth exceeds 1.
 
 Our central finding is that **bounded treewidth hurts quantum speedups more than it helps**: the structure enabling classical tractability (memoization, bounded-width DP) is precisely the structure neutralizing quantum advantages (simulability, oracle-composition barriers). Quantum advantage is maximized for *intermediate* structure — enough regularity to outperform unstructured Grover search, insufficient for classical DP to dominate.
 
@@ -28,9 +28,9 @@ We give the first systematic analysis of this interaction, organized around five
 
 3. **Proposition 2 (Precomputation Tradeoff).** A hybrid classical-precomputation / Grover-search strategy adapted from subset-lattice DP to tree-decomposition DP can beat classical exponential-space DP by moderate constant factors.
 
-4. **The Oracle-vs-Process Dichotomy.** The Schöning-vs-PPSZ quantization asymmetry is explained by the structural shape of each algorithm's randomness.
+4. **Theorem 2 (Universal Quadratic Speedup).** We prove that *all* classical randomized SAT algorithms with poly-time trials admit a full quadratic quantum speedup via amplitude amplification, formalizing and correcting an earlier informal classification. An immediate corollary: quantum PPSZ achieves O\*(1.143^*n*) for 3-SAT, beating quantum Schöning's O\*(1.155^*n*).
 
-5. **Observation 2 (Simulability Barrier).** Structure-respecting quantum circuits are classically simulable (a corollary of Markov–Shi 2008, articulated here in the treewidth-CSP setting), creating a no-man's-land where quantum advantage is provably absent.
+5. **Observation 3 (Simulability Barrier).** Structure-respecting quantum circuits are classically simulable (a corollary of Markov–Shi 2008, articulated here in the treewidth-CSP setting), creating a no-man's-land where quantum advantage is provably absent.
 
 6. **Theorem 3 (QSETH Lower Bound).** Under QSETH, the exponent constant *c* in O\*(*d*^{*cw*}) satisfies *c* ≥ 1/2 — no quantum algorithm solves primal-pathwidth-parameterized SAT faster than O\*((√2)^{pw}). This is a conditional theorem about *all* quantum algorithms.
 
@@ -168,47 +168,51 @@ The speedup is moderate (constant factors, not asymptotic exponent improvement) 
 
 ---
 
-## 6. The Oracle-vs-Process Dichotomy
+## 6. The Universal Quadratic Speedup and Its Limits
 
-### 6.1 The empirical asymmetry
+### 6.1 Theorem 2: Universal Quadratic Speedup for Randomized SAT Algorithms
 
-Two classical algorithms for *k*-SAT exhibit strikingly different behavior under quantum speedup:
+An earlier draft of this paper proposed an "oracle-shaped vs. process-shaped" classification of randomized algorithms, arguing that algorithms like PPSZ resist quantum speedup while algorithms like Schöning quantize cleanly. **That classification was incorrect.** Both algorithms — and indeed all randomized algorithms in the relevant class — admit a full quadratic quantum speedup via amplitude amplification. We correct the record here and reframe the section around the right question.
 
-- **Schöning (1999):** Random walk on the Hamming cube. Base: (2(*k*−1)/*k*)^*n*. Admits a *full quadratic quantum speedup* (Ambainis 2004): base → base^{*n*/2}, giving ≈ 1.155^*n* for 3-SAT.
+**Theorem 2 (Universal Quadratic Speedup).** *Let A be a classical randomized algorithm that solves k-SAT on n-variable, m-clause formulas in expected time O\*(c^n), where each execution of A (given its random bits) is implementable as a deterministic computation in time T(n, m) = poly(n, m). Then there exists a bounded-error quantum algorithm solving k-SAT in time O\*(c^{n/2}).*
 
-- **PPSZ (Paturi–Pudlák–Saks–Zane 2005):** Random permutation + unit-propagation resolution. Base: ≈ 1.307^*n* for 3-SAT. Admits only a *partial* quantum speedup of its tree-search subroutines (Rennela–Brand–Laarman–Dunjko, Quantum 2023).
+*Proof.* View A as a deterministic function of its random input *r*: A(*r*) = 1 if the execution with randomness *r* produces a satisfying assignment, 0 otherwise. By assumption, Pr_r[A(*r*) = 1] ≥ 1/c^n.
 
-Schöning is classically *worse* than PPSZ but quantizes *better*. If PPSZ admitted a full quadratic speedup, its quantum base (≈ 1.143^*n*) would beat quantum Schöning (≈ 1.155^*n*) — but this is not achieved.
+By Bennett (1973), the deterministic computation A(*r*) can be implemented as a reversible circuit of size O(T(n,m)^{1+ε}) for any ε > 0. For T = poly(n, m), the reversible circuit is polynomial-size.
 
-### 6.2 Structural explanation
+This reversible circuit implements the unitary |*r*⟩|0⟩ → |*r*⟩|A(*r*)⟩, which serves as the Grover oracle. Amplitude amplification (Brassard–Høyer–Mosca–Tapp 2002) over the space of random inputs, using this oracle, finds a successful *r* in O(1/√p) = O(c^{n/2}) iterations, each costing poly(n, m). Total: O\*(c^{n/2}). □
 
-We propose the following classification. These definitions are informal — we offer them as an organizing framework, not as formal complexity-theoretic notions. Formalizing them as provable barriers remains open.
+*Remark.* This observation is implicit in Dantsin–Kreinovich–Wolpert (SIGACT News, 2005) and is a direct consequence of the amplitude amplification theorem. We state it explicitly because its application to the PPSZ algorithm appears underappreciated in the literature.
 
-**Definition (Oracle-Shaped Randomness, informal).** A randomized algorithm has *oracle-shaped randomness* if it consists of independent, identically-structured trials where: (a) each trial can be implemented as a single coherent quantum computation (i.e., a unitary followed by measurement), and (b) the number of trials needed is 1/*p* for a success probability *p* that is a known function of the input parameters. The key property is *product structure*: trials are iid, so amplitude amplification applies directly, replacing 1/*p* repetitions with 1/√*p*.
+### 6.2 Application: Quantum PPSZ beats quantum Schöning
 
-**Definition (Process-Shaped Randomness, informal).** A randomized algorithm has *process-shaped randomness* if its execution involves *adaptive state-dependent transformations* — steps whose behavior depends on the outcomes of previous steps in a way that prevents the entire execution from being wrapped as a single coherent oracle. The key property is *sequential dependence*: the algorithm's power derives from information gathered adaptively during execution, and this adaptivity is inherently non-unitary.
+Applying Theorem 2 to the two main classical SAT algorithms:
 
-**Clarification.** The distinction is *not* about whether the overall success probability has a closed form — PPSZ's expected success probability is computable in closed form (that is how Hertli derived the 1.307^*n* bound). The distinction is about whether *individual trials* have product structure. In Schöning, each trial is a random walk whose success probability ((*k*−1)/*k*)^*n* is independent of the walk's trajectory — the trial either succeeds or fails, and we repeat. In PPSZ, the algorithm processes variables in a random order, applying resolution at each step; the probability that variable *x_i* is set correctly depends on which earlier variables were set correctly, creating a chain of conditional probabilities. There is no natural "trial" that can be coherently reversed and re-run.
+**Quantum Schöning.** Schöning's algorithm (1999) runs in O\*((2(k−1)/k)^n). By Theorem 2: O\*((2(k−1)/k)^{n/2}). For 3-SAT: O\*(1.155^n). (This is the result of Ambainis 2004.)
 
-**Schöning** is oracle-shaped: each trial is a random walk from a random starting point, with iid trial structure. Amplitude amplification wraps the entire trial as a quantum oracle, giving O(1/√*p*) repetitions.
+**Quantum PPSZ.** PPSZ (Paturi et al. 2005), with Hertli's (2014) improved analysis, runs in O\*(1.307^n) for 3-SAT. Each trial draws a random permutation π and random bits, then applies bounded-width resolution and variable-setting — a deterministic poly-time computation given (π, bits). By Theorem 2: O\*(1.307^{n/2}) = O\*(1.143^n).
 
-**PPSZ** is process-shaped: the algorithm draws a random permutation π, then processes variables sequentially, applying unit propagation and bounded-width resolution at each step. The resolution step *modifies the formula* in a path-dependent way — the simplified formula after processing *x*₁ depends on the value assigned to *x*₁. This sequential modification cannot be naïvely wrapped as a reversible quantum oracle because uncomputing the resolution state would destroy the information the algorithm exploits.
+| *k* | Schöning | PPSZ | Q-Schöning | **Q-PPSZ** | Grover | Best known quantum |
+|-----|----------|------|------------|-----------|--------|-------------------|
+| 3 | 1.334 | 1.307 | 1.155 | **1.143** | 1.414 | **1.143 (Q-PPSZ)** |
+| 4 | 1.500 | 1.469 | 1.225 | **1.212** | 1.414 | **1.212 (Q-PPSZ)** |
+| 5 | 1.600 | 1.569 | 1.265 | **1.253** | 1.414 | **1.253 (Q-PPSZ)** |
+| 7 | 1.714 | 1.693 | 1.309 | **1.301** | 1.414 | **1.301 (Q-PPSZ)** |
+| 10 | 1.800 | 1.794 | 1.342 | **1.339** | 1.414 | **1.339 (Q-PPSZ)** |
 
-### 6.3 Implications for the quantum Schaefer landscape
+**Quantum PPSZ beats quantum Schöning for all k ≥ 3.** The improvement comes entirely from PPSZ being classically superior; the quantum speedup mechanism is identical.
 
-This dichotomy predicts: for each NP-hard constraint language Γ, the achievable quantum exponent depends not just on Γ but on the *algorithmic family* applied. Languages where the best classical algorithm is oracle-shaped (random walks, local search) will admit full quadratic quantum speedup. Languages where the best classical algorithm is process-shaped (resolution-based, algebraic) will resist.
+**Erratum.** An earlier version of this paper listed quantum PPSZ as "hypothetical, NOT achieved" and proposed an "oracle-shaped vs. process-shaped" classification to explain why PPSZ purportedly resisted quantization. This was based on a misreading of Rennela–Brand–Laarman–Dunjko (Quantum, 2023). That paper explores speedups of PPSZ's *internal subroutines* beyond naive amplitude amplification — a different and harder question. The naive amplitude amplification of the full PPSZ trial is straightforward and gives the bounds above. We retract the oracle-vs-process classification.
 
-For *k*-SAT specifically, our simulation validates (§Appendix, Table 3):
+### 6.3 The correct open question
 
-| *k* | Schöning base | Q-Schöning | PPSZ base | Grover | Best known quantum |
-|-----|-------------|------------|----------|--------|-------------------|
-| 3 | 1.333 | 1.155 | 1.307 | 1.414 | 1.155 (Q-Schöning) |
-| 4 | 1.500 | 1.225 | 1.469 | 1.414 | 1.225 (Q-Schöning) |
-| 5 | 1.600 | 1.265 | 1.569 | 1.414 | 1.265 (Q-Schöning) |
-| 7 | 1.714 | 1.309 | 1.693 | 1.414 | 1.309 (Q-Schöning) |
-| 10 | 1.800 | 1.342 | 1.794 | 1.414 | 1.342 (Q-Schöning) |
+Since every classical randomized algorithm with poly-time trials quantizes to √(base) by Theorem 2, the interesting question is not "which algorithms quantize" (they all do) but:
 
-Quantum Schöning dominates for all tested *k*, but the margin over Grover shrinks as *k* → ∞ (both approach √2). The hypothetical quantum PPSZ would dominate if achievable, but it is not.
+**Open Question.** *Does there exist a quantum algorithm for k-SAT running in time O\*(c^n) with c < √c_{classical}, where c_{classical} is the base of the best classical algorithm?*
+
+Such an algorithm would need to exploit problem structure in a *fundamentally quantum* way — not merely amplifying a classical trial, but using interference, entanglement, or quantum walks to navigate the solution space more efficiently than any classical randomized algorithm. The Rennela et al. (2023) programme of quantum-accelerating internal subroutines (tree search, resolution) is one approach; it has yielded partial results but no unconditional improvement over the √(base) bound.
+
+**Relation to the treewidth question.** For treewidth-parameterized CSPs, the analogous question is: can quantum algorithms beat the √(d^w) = d^{w/2} base? Theorem 3 (§8.1) establishes d^{1/2} as a QSETH-conditional lower bound per unit of width, and Analysis 1 (§8.2) shows that recursive Grover fails to achieve even d^{cw} for any c < 1 at decomposition depth ≥ 2. The memoization obstruction (§4) provides the structural explanation: classical DP already exploits tree structure so thoroughly that quantum search has nothing left to accelerate.
 
 ---
 
@@ -216,7 +220,7 @@ Quantum Schöning dominates for all tested *k*, but the margin over Grover shrin
 
 ### 7.1 Statement
 
-**Observation 2 (Simulability Barrier).** *Let I be a CSP instance with treewidth w. If a quantum algorithm for I produces a quantum circuit C whose interaction graph has treewidth O(w), then by Markov–Shi (SICOMP 2008; refined by Cheng et al. 2025 for rank-width), C is classically simulable in time 2^{O(w)} · poly(n). In particular, any quantum speedup over classical DP requires the circuit to have treewidth ω(w).*
+**Observation 3 (Simulability Barrier).** *Let I be a CSP instance with treewidth w. If a quantum algorithm for I produces a quantum circuit C whose interaction graph has treewidth O(w), then by Markov–Shi (SICOMP 2008; refined by Cheng et al. 2025 for rank-width), C is classically simulable in time 2^{O(w)} · poly(n). In particular, any quantum speedup over classical DP requires the circuit to have treewidth ω(w).*
 
 This is a direct corollary of the Markov–Shi tensor-network simulation theorem, not a new result. We state it here because its *implication* for our question — that structure-respecting quantum circuits are automatically classically simulable — has not been articulated in the treewidth-parameterized CSP setting.
 
@@ -342,7 +346,7 @@ Classical structure and quantum amplitude amplification interact through three m
 
 **(a) The memoization effect.** Structure (bounded treewidth) enables classical DP with memoization, converting *n*^{Θ(*w*)} recursion into *n* · *d*^{O(*w*)} table-driven evaluation. Quantum search applied to the unmemoized recursion achieves a quadratic speedup over *that* baseline, but the memoized classical algorithm provides a *super-quadratic* speedup over the same baseline. When both sides are granted exponential space, quantum provides no speedup on the table-construction cost (§4.2). Net effect: **the specific advantage of amplitude amplification (accelerating search) is orthogonal to the specific advantage of memoization (avoiding redundant computation).**
 
-**(b) The simulability effect.** Structure-respecting quantum circuits (those whose interaction graph mirrors the instance treewidth) are classically simulable (Observation 2, via Markov–Shi), erasing any quantum advantage. Avoiding simulability requires high-entanglement circuits — but those cannot exploit instance structure. Net effect: **structure constrains circuit design, removing quantum advantage.**
+**(b) The simulability effect.** Structure-respecting quantum circuits (those whose interaction graph mirrors the instance treewidth) are classically simulable (Observation 3, via Markov–Shi), erasing any quantum advantage. Avoiding simulability requires high-entanglement circuits — but those cannot exploit instance structure. Net effect: **structure constrains circuit design, removing quantum advantage.**
 
 **(c) The precomputation tradeoff.** The Ambainis-style hybrid (classically precompute lower layers, Grover-search upper layers) partially circumvents (a), but the gains are moderate (constant factors at fixed parameters) and disappear as *d* or *w* grow. The memoization obstruction is softened, not eliminated. Net effect: **structure enables partial quantum gains, but sub-quadratic.**
 
@@ -358,13 +362,7 @@ Quantum advantage for CSPs is maximized in a *sweet spot* of intermediate struct
 
 ### 9.3 The Schaefer-landscape connection
 
-On the constraint-language side, the achievable quantum speedup depends on the *algorithmic family* best suited to each language Γ:
-
-- Languages where the best classical algorithm is oracle-shaped (random walks, local search): full quadratic speedup expected.
-- Languages where the best classical algorithm is process-shaped (resolution, algebraic methods): quantum speedup limited to partial/hybrid gains.
-- Languages on the tractable side of the Bulatov-Zhuk dichotomy: polynomial-time classically, so quantum speedups are at most polynomial — the interesting question moves to the Allender et al. (2009) fine structure within P.
-
-No universal "quantum Schaefer theorem" exists or is likely to exist in the near term, because the achievable speedup depends on algorithmic strategy, not just the problem's polymorphism algebra. This is a qualitatively different situation from the classical Bulatov-Zhuk theorem, where the complexity depends on the language alone.
+On the constraint-language side, by Theorem 2 (Universal Quadratic Speedup), the quantum exponent base for any NP-hard language Γ is at most √*c*_classical(Γ), where *c*_classical(Γ) is the base of the best classical randomized algorithm for CSP(Γ). The achievable quantum speedup therefore *inherits* the classical fine-grained landscape: languages where classical algorithms are faster (lower *c*_classical) also have faster quantum algorithms (lower √*c*_classical). There is no known case where quantum provides a *super-quadratic* speedup — i.e., achieving base strictly less than √*c*_classical — for any specific constraint language.
 
 **Remark (Tovey's theorem and bounded locality).** Bounded constraint overlap does not ensure tractability even classically. Tovey (1984) showed that 3-SAT restricted to instances where every variable appears in at most 3 clauses remains NP-complete. This is a classical counterpart to our finding: "local-looking" constraint structure (few constraints per variable, analogous to bounded bag size) does not by itself reduce hardness. The structural parameters that *do* ensure tractability — treewidth (Freuder; Dechter–Pearl), polymorphisms (Schaefer; Bulatov–Zhuk) — are global, not local.
 
@@ -432,6 +430,9 @@ This finding has implications beyond CSPs: any computational domain where classi
 26. Bennett, C.H. (1973). Logical reversibility of computation. IBM J. Res. Dev., 17(6), 525–532.
 27. de Colnet, A., Geerts, F., Hai, L.V., Laarman, A., Lee, H.K., & Pérez, G. (2026). Quadratic sums-of-powers for fixed-parameter tractable quantum-circuit simulation. arXiv:2605.29944.
 28. Zalka, C. (1999). Grover's quantum searching algorithm is optimal. Phys. Rev. A, 60(4), 2746–2751.
+29. Dantsin, E., Kreinovich, V., & Wolpert, A. (2005). On quantum versions of record-breaking algorithms for SAT. ACM SIGACT News, 36(4), 103–108.
+30. Hertli, T. (2014). 3-SAT faster and simpler — unique-k-SAT upper bounds. SIAM J. Comput., 43(2), 718–725.
+31. Paturi, R., Pudlák, P., Saks, M., & Zane, F. (2005). An improved exponential-time algorithm for k-SAT. J. ACM, 52(3), 337–364.
 
 ---
 
