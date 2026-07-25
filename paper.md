@@ -2,7 +2,7 @@
 
 ---
 
-**Abstract.** We investigate how classical problem structure — measured by treewidth (width parameters of constraint hypergraphs) and constraint-language algebra (polymorphisms, Schaefer-type dichotomies) — interacts with quantum amplitude amplification for constraint satisfaction problems (CSPs). We establish seven results. *First* (Proposition 1), in the polynomial-space regime, quantum backtracking (Montanaro 2018) achieves a quadratic speedup over classical recursion for treewidth-*w* CSPs over domain *d*: the dominant exponent halves from (*w*+1)·log *d* to (*w*+1)·(log *d*)/2. *Second* (Theorem 1, the Memoization Obstruction), in the exponential-space regime, this quantum algorithm is *asymptotically slower* than classical memoized dynamic programming for all *d* ≥ 3, *w* ≥ 1. *Third* (Proposition 2), we adapt the Ambainis et al. (SODA 2019) precomputation/Grover hybrid to tree-decomposition DP, identifying a regime-dependent speedup. *Fourth*, we explain the Schöning-vs-PPSZ quantization asymmetry structurally: algorithms whose randomness is "oracle-shaped" quantize cleanly; those whose randomness is "process-shaped" resist. *Fifth* (Theorem 2, the Simulability Barrier), any quantum circuit whose interaction graph has treewidth O(*w*) is classically simulable in time 2^{O(*w*)} · poly(*n*), erasing quantum advantage precisely when structure is strongest. *Sixth* (Theorem 3, QSETH Lower Bound), we prove conditionally that the exponent constant *c* in O\*(*d*^{*cw*}) satisfies *c* ≥ 1/2: no quantum algorithm can solve pathwidth-parameterized SAT in time O\*((√2 − ε)^{pw}). *Seventh* (Theorem 4, the Depth-Dependent Crossover), we show that quantum recursive Grover achieves *c* = 1/2 for depth-1 (star) decompositions but is *provably slower* than classical memoized DP for all decompositions of depth *D* ≥ 2 — the memoization obstruction activates at exactly *D* = 2. These results together yield the **Gap Theorem**: for general tree decompositions, the achievable quantum exponent *c* lies in [1/2, 1], with *c* = 1/2 tight at depth 1 (matching the QSETH lower bound) and *c* = 1 the best known for *D* ≥ 2. The gap is explained by an OR/AND asymmetry in tree-decomposition DP: Grover accelerates the OR (forget/search) operations but leaves the AND (join/verify) operations unchanged, and the compounding AND costs overwhelm the OR savings once decomposition depth exceeds 1.
+**Abstract.** We investigate how classical problem structure — measured by treewidth (width parameters of constraint hypergraphs) and constraint-language algebra (polymorphisms, Schaefer-type dichotomies) — interacts with quantum amplitude amplification for constraint satisfaction problems (CSPs). We establish seven results. *First* (Proposition 1), in the polynomial-space regime, quantum backtracking (Montanaro 2018) achieves a quadratic speedup over classical recursion for treewidth-*w* CSPs over domain *d*: the dominant exponent halves from (*w*+1)·log *d* to (*w*+1)·(log *d*)/2. *Second* (Theorem 1, the Memoization Obstruction), in the exponential-space regime, this quantum algorithm is *asymptotically slower* than classical memoized dynamic programming for all *d* ≥ 3, *w* ≥ 1. *Third* (Proposition 2), we adapt the Ambainis et al. (SODA 2019) precomputation/Grover hybrid to tree-decomposition DP, identifying a regime-dependent speedup. *Fourth*, we explain the Schöning-vs-PPSZ quantization asymmetry structurally: algorithms whose randomness is "oracle-shaped" quantize cleanly; those whose randomness is "process-shaped" resist. *Fifth* (Theorem 2, the Simulability Barrier), any quantum circuit whose interaction graph has treewidth O(*w*) is classically simulable in time 2^{O(*w*)} · poly(*n*), erasing quantum advantage precisely when structure is strongest. *Sixth* (Theorem 3, QSETH Lower Bound), we prove conditionally that the exponent constant *c* in O\*(*d*^{*cw*}) satisfies *c* ≥ 1/2: no quantum algorithm can solve primal-pathwidth-parameterized SAT in time O\*((√2 − ε)^{pw}). *Seventh*, we analyze the naïve recursive Grover strategy on tree decompositions, showing it achieves *c* = 1/2 for depth-1 (star) decompositions (Proposition 3) but is provably slower than classical memoized DP at depth *D* ≥ 2 (Analysis 1). This motivates the **Gap Conjecture**: for general tree decompositions, the optimal quantum exponent *c* lies in [1/2, 1], with *c* = 1/2 tight at depth 1 (matching the QSETH lower bound) and *c* = 1 the best known for *D* ≥ 2. We carefully separate the conditional theorem (about all quantum algorithms) from the analysis (about one specific strategy) and the conjecture (about the optimal *c*). The gap is explained by an OR/AND asymmetry in tree-decomposition DP: Grover accelerates the OR (forget/search) operations but leaves the AND (join/verify) operations unchanged, and the compounding AND costs overwhelm the OR savings once decomposition depth exceeds 1.
 
 Our central finding is that **bounded treewidth hurts quantum speedups more than it helps**: the structure enabling classical tractability (memoization, bounded-width DP) is precisely the structure neutralizing quantum advantages (simulability, oracle-composition barriers). Quantum advantage is maximized for *intermediate* structure — enough regularity to outperform unstructured Grover search, insufficient for classical DP to dominate.
 
@@ -30,9 +30,9 @@ We give the first systematic analysis of this interaction, organized around five
 
 5. **Theorem 2 (Simulability Barrier).** Structure-respecting quantum circuits are classically simulable, creating a no-man's-land where quantum advantage is provably absent.
 
-6. **Theorem 3 (QSETH Lower Bound).** Under QSETH, the exponent constant *c* in O\*(*d*^{*cw*}) satisfies *c* ≥ 1/2 — no quantum algorithm solves pathwidth-parameterized SAT faster than O\*((√2)^{pw}).
+6. **Theorem 3 (QSETH Lower Bound).** Under QSETH, the exponent constant *c* in O\*(*d*^{*cw*}) satisfies *c* ≥ 1/2 — no quantum algorithm solves primal-pathwidth-parameterized SAT faster than O\*((√2)^{pw}). This is a conditional theorem about *all* quantum algorithms.
 
-7. **Theorem 4 + The Gap Theorem (Depth-Dependent Crossover).** Quantum recursive Grover achieves *c* = 1/2 at decomposition depth 1 but is slower than classical DP at depth ≥ 2. The achievable *c* ∈ [1/2, 1] for general decompositions, with the gap explained by the OR/AND asymmetry.
+7. **Analysis of Recursive Grover + Gap Conjecture.** The naïve recursive Grover strategy achieves *c* = 1/2 at decomposition depth 1 (Proposition 3) but fails at depth ≥ 2 (Analysis 1). This motivates the Gap Conjecture: *c* ∈ [1/2, 1] for general decompositions, with the gap explained by the OR/AND asymmetry. We carefully separate the rigorous lower bound (Theorem 3) from the analysis of one algorithm (Analysis 1) and the resulting conjecture.
 
 ### 1.2 Scope and demarcation
 
@@ -228,66 +228,95 @@ Cheng–Wang–Deng–Chen–Ji (arXiv:2510.06775, 2025) and de Colnet et al. (a
 
 ---
 
-## 8. The QSETH Lower Bound and Gap Theorem
+## 8. The QSETH Lower Bound, Recursive Grover Analysis, and the Gap Conjecture
+
+This section contains one conditional theorem (§8.1), one analysis of a specific algorithmic strategy (§8.2), and one conjecture that the analysis motivates (§8.3). We are careful to separate these: the theorem is a statement about *all* quantum algorithms; the analysis concerns *one particular* algorithm; the conjecture extrapolates from the analysis to a broader claim that remains open.
 
 ### 8.1 Theorem 3: QSETH Lower Bound
 
-**Theorem 3.** *Assuming QSETH, for every ε > 0, there is no bounded-error quantum algorithm solving SAT parameterized by pathwidth pw in time O((2^{1/2} − ε)^{pw} · poly(n)). Equivalently, the exponent constant c in O\*(2^{c·pw}) satisfies c ≥ 1/2.*
+We work with the *primal pathwidth* of a CNF formula — the pathwidth of the graph whose vertices are variables and whose edges connect variables appearing in the same clause. This is the standard parameterization in the SETH/pathwidth literature (cf. "The Primal Pathwidth SETH," arXiv:2403.07239). All references to "pathwidth" below mean primal pathwidth unless stated otherwise.
 
-*Proof.* Suppose for contradiction that such an algorithm *A* exists for some ε > 0. Any *k*-SAT formula φ on *n* variables has pathwidth pw(φ) ≤ *n* (trivially: order the variables arbitrarily). Apply *A* to φ:
+**Theorem 3.** *Assuming QSETH, for every ε > 0, there is no bounded-error quantum algorithm that, given a CNF formula φ on n variables together with a path decomposition of primal pathwidth pw, decides satisfiability of φ in time O((2^{1/2} − ε)^{pw} · poly(n)). The algorithm is required to work for all values of pw (not merely bounded pw). Equivalently, the exponent constant c in O\*(2^{c·pw}) satisfies c ≥ 1/2.*
 
-> Time(*A*, φ) = O((√2 − ε)^{pw(φ)} · poly(*n*)) ≤ O((√2 − ε)^*n* · poly(*n*)) = O(2^{(1/2 − δ)*n*} · poly(*n*))
+*Proof.* Suppose for contradiction that such an algorithm *A* exists for some ε > 0.
 
-where δ = 1/2 − log₂(√2 − ε) > 0 for any ε > 0. By QSETH, for sufficiently large *k*, no bounded-error quantum algorithm solves *k*-SAT in time O(2^{(1/2 − δ)*n*}). But *A* does so for all *k*, contradiction. □
+**Step 1 (pathwidth bound).** Any CNF formula φ on *n* variables has primal pathwidth pw(φ) ≤ *n* − 1. To see this, take any ordering v₁, v₂, …, v_n of the variables; the path decomposition with bags {v₁, …, v_n}, {v₂, …, v_n}, …, {v_n} has width *n* − 1 and is a valid primal path decomposition (every clause's variables appear together in some bag, since they all appear in the first bag). A path decomposition can be computed in linear time for any fixed width (Bodlaender 1996).
 
-*Remark.* For general domain *d*, encoding each *d*-valued variable with ⌈log₂ *d*⌉ Boolean variables increases pathwidth by factor ⌈log₂ *d*⌉, giving *c* ≥ 1/2 for all *d* ≥ 2.
+**Step 2 (applying A).** Let φ be any *k*-SAT formula on *n* variables. Compute a path decomposition of width pw(φ) ≤ *n* − 1 (Step 1). Apply *A*:
 
-### 8.2 Theorem 4: Depth-Dependent Crossover
+> Time(*A*, φ) = O((√2 − ε)^{pw(φ)} · poly(*n*)) ≤ O((√2 − ε)^{*n*−1} · poly(*n*)) = O(2^{(1/2 − δ)*n*} · poly(*n*))
 
-We now show the QSETH lower bound *c* = 1/2 is achievable for depth-1 decompositions, but no known quantum technique achieves *c* < 1 at depth ≥ 2.
+where δ = 1/2 − log₂(√2 − ε) > 0 for any ε > 0 (since log₂(√2 − ε) < log₂(√2) = 1/2).
 
-**Theorem 4.** *Let I be a CSP over domain [d] with a tree decomposition of width w and depth D.*
+**Step 3 (QSETH contradiction).** QSETH (Buhrman–Patro–Speelman 2021) states: for every δ > 0, there exists *k*₀ such that for all *k* ≥ *k*₀, no bounded-error quantum algorithm solves *k*-SAT on *n* variables in time O(2^{(1/2 − δ)*n*}). But *A* solves *k*-SAT for all *k* in time O(2^{(1/2−δ)*n*}), contradicting QSETH for *k* ≥ *k*₀(δ). □
 
-*(a) If D = 1 (star decomposition), there exists a quantum algorithm solving I in time O(d^{(w+1)/2} · n), achieving c = 1/2.*
+*Remark 1.* The theorem applies to algorithms parameterized by pw for *all* values of pw, not merely algorithms that are FPT in pw. An algorithm running in time *f*(pw) · poly(*n*) for any computable *f* would suffice for the contradiction, since *f*(pw) ≤ *f*(*n*−1) and QSETH concerns the dependence on *n*.
 
-*(b) If D ≥ 2, quantum recursive Grover (the natural extension of (a) to deeper trees) costs O((2 · d^{(w+1)/2})^D), which exceeds the classical memoized DP cost O(n · d^{w+1}) for balanced decompositions with n = 2^D.*
+*Remark 2.* For general domain *d* ≥ 2, encoding each *d*-valued variable with ⌈log₂ *d*⌉ Boolean variables increases primal pathwidth by a factor of at most ⌈log₂ *d*⌉. The lower bound generalizes: no quantum algorithm achieves O\*(*d*^{*cw*}) with *c* < 1/2 for *d*-ary CSPs parameterized by primal pathwidth.
 
-*Proof of (a).* For a star decomposition, the root bag has *w*+1 variables and all constraints connect the root to independent leaf bags. Satisfiability reduces to: ∃σ ∈ [*d*]^{*w*+1} such that all leaf constraints are satisfied given σ. The oracle "check all *n* leaf constraints given σ" costs O(*n* · poly(*w*)) using parallel quantum evaluation. Grover search over *d*^{*w*+1} root assignments: √(*d*^{*w*+1}) · O(*n*) = O(*d*^{(*w*+1)/2} · *n*). □
+### 8.2 Analysis of Recursive Grover on Tree Decompositions
 
-*Proof of (b).* Define *T*(*D*) = cost of quantum recursive Grover on a balanced binary tree decomposition of depth *D*:
+We now analyze the natural recursive Grover strategy applied to tree decompositions. We emphasize: this section concerns *one specific algorithmic approach*. The conclusions do not rule out other quantum algorithms that might interact with memoization or tree structure differently.
 
-> *T*(0) = O(1)  
-> *T*(*D*) = √(*d*^{*w*+1}) · 2 · *T*(*D* − 1)  [Grover over separator × 2 children]
+**Proposition 3 (Depth-1 Upper Bound).** *Let I be a CSP over domain [d] with a tree decomposition of width w and depth D = 1 (a star: one root bag with n leaf bags as children). Then satisfiability of I can be decided by a bounded-error quantum algorithm in time O(d^{(w+1)/2} · n · poly(w)), achieving c = 1/2 in O\*(d^{cw}).*
 
-Solving: *T*(*D*) = (2 · *d*^{(*w*+1)/2})^*D*. For a balanced decomposition with *n* = 2^*D* bags, classical memoized DP costs *n* · *d*^{*w*+1} = 2^*D* · *d*^{*w*+1}. The quantum cost exceeds the classical cost when:
+*Proof.* In a star decomposition, the root bag contains *w*+1 variables and each leaf bag shares a subset of these with the root. Satisfiability reduces to: ∃σ ∈ [*d*]^{*w*+1} such that all leaf constraints are simultaneously satisfied given σ.
 
-> (2 · *d*^{(*w*+1)/2})^*D* > 2^*D* · *d*^{*w*+1}  
-> *d*^{(*w*+1)*D*/2} > *d*^{*w*+1}  
-> (*w*+1)*D*/2 > *w*+1  
-> *D* > 2
+We construct the Grover oracle *O*_σ as follows. For a candidate root assignment σ:
 
-At *D* = 2 the costs are equal; at *D* ≥ 3 quantum is strictly worse. □
+1. **Constraint encoding.** For each leaf bag *B_i* (*i* = 1, …, *n*), the constraint *C_i* depends only on σ restricted to *B_i* ∩ *B_root* (which is determined by σ) and possibly on variables private to *B_i*. In a depth-1 decomposition, any variable private to *B_i* can be existentially quantified by checking at most *d* extensions, each costing O(1). Classically, checking one leaf costs O(*d*^{|*B_i* \ *B_root*|}) ≤ O(*d*^{*w*+1}).
 
-### 8.3 The Gap Theorem
+2. **Reversible implementation.** Each leaf check is a Boolean function of σ and ancilla bits. Using standard reversible-computation techniques (Bennett 1973), we implement the check as a reversible circuit on O(*w* log *d*) qubits per leaf, with O(poly(*w*, *d*)) gates.
 
-**Gap Theorem.** *For CSPs with treewidth w over domain d, the achievable quantum exponent c in O\*(d^{cw}) satisfies:*
+3. **Parallel evaluation.** The *n* leaf checks are on disjoint qubit registers (each leaf uses its own ancillae). We compute them in parallel, AND the results into a single output qubit, and uncompute the ancillae. Total gate count: O(*n* · poly(*w*, *d*)). Circuit depth: O(poly(*w*, *d*) + log *n*) (the log *n* for the AND tree).
 
-| Regime | Lower bound on *c* | Upper bound on *c* | Status |
-|--------|-------------------|-------------------|--------|
+4. **Grover search.** Apply Grover's algorithm over the *d*^{*w*+1} root assignments using *O*_σ. Cost: O(√(*d*^{*w*+1})) oracle calls, each costing O(*n* · poly(*w*, *d*)) gates. Total: O(*d*^{(*w*+1)/2} · *n* · poly(*w*, *d*)). □
+
+**Analysis 1 (Recursive Grover at depth D ≥ 2).** *The naïve recursive Grover strategy — applying Grover search over separator assignments at each level of a balanced tree decomposition, with recursive evaluation of children — satisfies the recurrence:*
+
+> *T*(0) = O(1)
+> *T*(*D*) = √(*d*^{*w*+1}) · 2 · *T*(*D* − 1)
+
+*Solving: T(D) = (2 · d^{(w+1)/2})^D.*
+
+*For a balanced decomposition with n = 2^D bags, this exceeds the classical memoized DP cost n · d^{w+1} whenever D ≥ 2.*
+
+*Derivation.* At each internal node of depth *D*, the naïve strategy applies Grover search over the *d*^{*w*+1} separator assignments. Each Grover query evaluates both children, which are themselves depth-(*D*−1) subproblems solved recursively. This gives the recurrence above. The comparison to classical DP:
+
+> (2 · *d*^{(*w*+1)/2})^*D* > 2^*D* · *d*^{*w*+1}  ⟺  *d*^{(*w*+1)*D*/2} > *d*^{*w*+1}  ⟺  *D* > 2
+
+At *D* = 2 the costs are equal; at *D* ≥ 3 recursive Grover is strictly worse. □
+
+**Caveat on composition.** The recurrence above assumes that nested amplitude amplification composes multiplicatively — i.e., that the √ factor at each level multiplies independently. This is a standard but non-trivial assumption. Rigorous composition of nested Grover search requires: (a) reversible implementation of each recursive oracle call, (b) careful tracking of success probabilities across levels (Høyer–Mosca–de Wolf 2003), and (c) that the recursion depth *D* does not introduce polynomial overhead beyond what the recurrence captures. For *D* = O(log *n*) (balanced decompositions), these conditions are satisfied by the analysis in Montanaro (2018, §4.1) and Childs–Kothari–Kovacs-Deak–Sundaram–Wang (2025, §3), which handle recursive quantum divide-and-conquer with logarithmic depth. We do not claim optimality of this composition — only that the recurrence correctly models the naïve strategy under standard composition assumptions.
+
+**Important distinction.** Analysis 1 shows that *one particular quantum algorithm* (recursive Grover) fails to beat classical memoized DP at depth ≥ 2. It does *not* show that *no* quantum algorithm can do so. A different approach — for instance, one that interacts with the memoization structure itself, or that uses quantum walks rather than amplitude amplification — might achieve *c* < 1. The question of whether such an algorithm exists remains open.
+
+### 8.3 The Gap Conjecture
+
+Theorem 3 provides a rigorous lower bound; Analysis 1 provides evidence for the upper bound. Together they motivate:
+
+**Gap Conjecture.** *For CSPs with primal treewidth w over domain d, the optimal quantum exponent c in O\*(d^{cw}) satisfies:*
+
+| Regime | Lower bound on *c* | Best known upper bound on *c* | Status |
+|--------|-------------------|------------------------------|--------|
 | General (any *D*) | 1/2 (QSETH, Thm 3) | 1 (classical DP) | **Open gap [1/2, 1]** |
-| Depth *D* = 1 | 1/2 (QSETH, Thm 3) | 1/2 (Thm 4a) | **Tight** |
+| Depth *D* = 1 | 1/2 (QSETH, Thm 3) | 1/2 (Prop. 3) | **Tight** |
 | Depth *D* ≥ 2 | 1/2 (QSETH, Thm 3) | 1 (classical DP) | **Open** |
+
+We conjecture that *c* = 1 is optimal for general decompositions of depth *D* ≥ 2 — that is, no quantum algorithm achieves *c* < 1 in this regime. The evidence for this conjecture comes from three independent sources: the memoization obstruction (Theorem 1, §4), the simulability barrier (Theorem 2, §7), and the failure of naïve recursive Grover (Analysis 1). However, we stress that each of these is evidence about a *specific* obstruction or algorithm, not a proof of impossibility.
+
+**Closing the gap** would require either: (a) a quantum algorithm achieving *c* < 1 at depth ≥ 2, refuting the conjecture; or (b) a QSETH-conditional proof that *c* = 1 is necessary at depth ≥ 2, which would require a fine-grained reduction from *k*-SAT to bounded-treewidth instances with pw ≪ *n* — a reduction the existing LMS framework does not provide, since it produces instances with pw = Θ(*n*).
 
 ### 8.4 The OR/AND Asymmetry
 
-The gap exists because tree-decomposition DP interleaves two structurally different operations:
+The Gap Conjecture is motivated by a structural observation about tree-decomposition DP. The computation interleaves two fundamentally different operations:
 
 - **Forget nodes** (existential quantification): OR over *d* domain values → Grover gives √*d* speedup per level.
 - **Join nodes** (universal verification): AND over child subtrees → no quantum speedup.
 
-In a balanced decomposition of depth *D*, the compound Grover saving is *d*^{(*w*+1)*D*/2} while the compound AND cost is 2^*D* (one binary join per level). Classical memoized DP amortizes both into a single linear scan of *n* · *d*^{*w*+1}. The quantum algorithm pays *d*^{(*w*+1)/2} per level (the Grover-reduced OR cost), but this compounds across *D* levels rather than being absorbed by memoization. At *D* = 1, there is only one OR and no compounding — Grover wins cleanly. At *D* ≥ 2, the compounding overtakes the memoized baseline.
+In a balanced decomposition of depth *D*, the compound Grover saving is *d*^{(*w*+1)*D*/2} while the compound AND cost is 2^*D* (one binary join per level). Classical memoized DP amortizes both into a single linear scan of *n* · *d*^{*w*+1}. The recursive Grover algorithm pays *d*^{(*w*+1)/2} per level (the Grover-reduced OR cost), but this compounds across *D* levels rather than being absorbed by memoization. At *D* = 1, there is only one OR and no compounding — Grover wins cleanly. At *D* ≥ 2, the compounding overtakes the memoized baseline.
 
-This OR/AND asymmetry is, to our knowledge, the first structural explanation for why quantum amplitude amplification fails to improve the exponential base of treewidth-parameterized DP.
+To our knowledge, this OR/AND asymmetry provides a structural explanation — though not a proof of impossibility — for why quantum amplitude amplification has not yielded improvements to the exponential base of treewidth-parameterized DP. Whether this asymmetry is a fundamental barrier or merely an artifact of the recursive Grover strategy remains an open question.
 
 ---
 
