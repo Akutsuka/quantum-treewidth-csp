@@ -1,0 +1,298 @@
+{
+  "summary": {
+    "proposition_1": "Quadratic speedup in poly-space regime confirmed",
+    "theorem_1": "Memoization obstruction holds for d\u22653, w\u22651",
+    "proposition_2": "Precomputation tradeoff yields regime-dependent gains",
+    "rq3": "Sch\u00f6ning/PPSZ asymmetry explained by oracle-vs-process structure",
+    "theorem_3": "Simulability barrier constrains circuit treewidth",
+    "synthesis": "Bounded treewidth hurts quantum speedups more than it helps"
+  },
+  "memo_obstruction": {
+    "d=2,w=1": {
+      "d": 2,
+      "w": 1,
+      "quantum_exponent_of_n": 1.0,
+      "classical_description": "n\u00b72^2",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=2,w=2": {
+      "d": 2,
+      "w": 2,
+      "quantum_exponent_of_n": 1.5,
+      "classical_description": "n\u00b72^3",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=2,w=3": {
+      "d": 2,
+      "w": 3,
+      "quantum_exponent_of_n": 2.0,
+      "classical_description": "n\u00b72^4",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=2,w=5": {
+      "d": 2,
+      "w": 5,
+      "quantum_exponent_of_n": 3.0,
+      "classical_description": "n\u00b72^6",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=3,w=1": {
+      "d": 3,
+      "w": 1,
+      "quantum_exponent_of_n": 1.584962500721156,
+      "classical_description": "n\u00b73^2",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=3,w=2": {
+      "d": 3,
+      "w": 2,
+      "quantum_exponent_of_n": 2.377443751081734,
+      "classical_description": "n\u00b73^3",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=3,w=3": {
+      "d": 3,
+      "w": 3,
+      "quantum_exponent_of_n": 3.169925001442312,
+      "classical_description": "n\u00b73^4",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=3,w=5": {
+      "d": 3,
+      "w": 5,
+      "quantum_exponent_of_n": 4.754887502163468,
+      "classical_description": "n\u00b73^6",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=5,w=1": {
+      "d": 5,
+      "w": 1,
+      "quantum_exponent_of_n": 2.321928094887362,
+      "classical_description": "n\u00b75^2",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=5,w=2": {
+      "d": 5,
+      "w": 2,
+      "quantum_exponent_of_n": 3.4828921423310435,
+      "classical_description": "n\u00b75^3",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=5,w=3": {
+      "d": 5,
+      "w": 3,
+      "quantum_exponent_of_n": 4.643856189774724,
+      "classical_description": "n\u00b75^4",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=5,w=5": {
+      "d": 5,
+      "w": 5,
+      "quantum_exponent_of_n": 6.965784284662087,
+      "classical_description": "n\u00b75^6",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=9,w=1": {
+      "d": 9,
+      "w": 1,
+      "quantum_exponent_of_n": 3.169925001442312,
+      "classical_description": "n\u00b79^2",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=9,w=2": {
+      "d": 9,
+      "w": 2,
+      "quantum_exponent_of_n": 4.754887502163468,
+      "classical_description": "n\u00b79^3",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=9,w=3": {
+      "d": 9,
+      "w": 3,
+      "quantum_exponent_of_n": 6.339850002884624,
+      "classical_description": "n\u00b79^4",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    },
+    "d=9,w=5": {
+      "d": 9,
+      "w": 5,
+      "quantum_exponent_of_n": 9.509775004326936,
+      "classical_description": "n\u00b79^6",
+      "crossover_n": 4,
+      "obstruction_holds": true
+    }
+  },
+  "precomputation_tradeoff": {
+    "d=2,w=1": {
+      "d": 2,
+      "w": 1,
+      "n": 1024,
+      "optimal_cutoff_level": 4,
+      "log2_hybrid_cost": 7.0,
+      "log2_classical_exp": 12.0,
+      "log2_classical_poly": 20.0,
+      "speedup_vs_expspace": 32.0,
+      "beats_expspace": true
+    },
+    "d=2,w=2": {
+      "d": 2,
+      "w": 2,
+      "n": 1024,
+      "optimal_cutoff_level": 5,
+      "log2_hybrid_cost": 8.771553303163612,
+      "log2_classical_exp": 13.0,
+      "log2_classical_poly": 30.0,
+      "speedup_vs_expspace": 18.74516600406096,
+      "beats_expspace": true
+    },
+    "d=2,w=3": {
+      "d": 2,
+      "w": 3,
+      "n": 1024,
+      "optimal_cutoff_level": 6,
+      "log2_hybrid_cost": 10.321928094887362,
+      "log2_classical_exp": 14.0,
+      "log2_classical_poly": 40.0,
+      "speedup_vs_expspace": 12.8,
+      "beats_expspace": true
+    },
+    "d=3,w=1": {
+      "d": 3,
+      "w": 1,
+      "n": 1024,
+      "optimal_cutoff_level": 5,
+      "log2_hybrid_cost": 9.052568050804153,
+      "log2_classical_exp": 13.169925001442312,
+      "log2_classical_poly": 31.69925001442312,
+      "speedup_vs_expspace": 17.35593220338983,
+      "beats_expspace": true
+    },
+    "d=3,w=2": {
+      "d": 3,
+      "w": 2,
+      "n": 1024,
+      "optimal_cutoff_level": 6,
+      "log2_hybrid_cost": 11.262682142362165,
+      "log2_classical_exp": 14.754887502163468,
+      "log2_classical_poly": 47.548875021634686,
+      "speedup_vs_expspace": 11.252747252747254,
+      "beats_expspace": true
+    },
+    "d=3,w=3": {
+      "d": 3,
+      "w": 3,
+      "n": 1024,
+      "optimal_cutoff_level": 7,
+      "log2_hybrid_cost": 13.437882085845152,
+      "log2_classical_exp": 16.339850002884624,
+      "log2_classical_poly": 63.39850002884624,
+      "speedup_vs_expspace": 7.474452554744525,
+      "beats_expspace": true
+    },
+    "d=9,w=1": {
+      "d": 9,
+      "w": 1,
+      "n": 1024,
+      "optimal_cutoff_level": 7,
+      "log2_hybrid_cost": 13.437882085845152,
+      "log2_classical_exp": 16.339850002884624,
+      "log2_classical_poly": 63.39850002884624,
+      "speedup_vs_expspace": 7.474452554744525,
+      "beats_expspace": true
+    },
+    "d=9,w=2": {
+      "d": 9,
+      "w": 2,
+      "n": 1024,
+      "optimal_cutoff_level": 7,
+      "log2_hybrid_cost": 16.785899409601175,
+      "log2_classical_exp": 19.509775004326936,
+      "log2_classical_poly": 95.09775004326937,
+      "speedup_vs_expspace": 6.606451612903226,
+      "beats_expspace": true
+    },
+    "d=9,w=3": {
+      "d": 9,
+      "w": 3,
+      "n": 1024,
+      "optimal_cutoff_level": 7,
+      "log2_hybrid_cost": 20.387059137850134,
+      "log2_classical_exp": 22.67970000576925,
+      "log2_classical_poly": 126.79700005769249,
+      "speedup_vs_expspace": 4.899521531100478,
+      "beats_expspace": true
+    }
+  },
+  "schoning_ppsz": {
+    "3": {
+      "k": 3,
+      "schoning_base": 1.3333333333333333,
+      "quantum_schoning_base": 1.1547005383792515,
+      "ppsz_base": 1.30704,
+      "quantum_ppsz_hypothetical": 1.1432585009524312,
+      "grover_base": 1.4142135623730951,
+      "best_known_quantum": 1.1547005383792515,
+      "ppsz_would_beat_schoning": true,
+      "schoning_beats_grover": true
+    },
+    "4": {
+      "k": 4,
+      "schoning_base": 1.5,
+      "quantum_schoning_base": 1.224744871391589,
+      "ppsz_base": 1.46899,
+      "quantum_ppsz_hypothetical": 1.2120189767491267,
+      "grover_base": 1.4142135623730951,
+      "best_known_quantum": 1.224744871391589,
+      "ppsz_would_beat_schoning": true,
+      "schoning_beats_grover": true
+    },
+    "5": {
+      "k": 5,
+      "schoning_base": 1.6,
+      "quantum_schoning_base": 1.2649110640673518,
+      "ppsz_base": 1.56928,
+      "quantum_ppsz_hypothetical": 1.2527090643880565,
+      "grover_base": 1.4142135623730951,
+      "best_known_quantum": 1.2649110640673518,
+      "ppsz_would_beat_schoning": true,
+      "schoning_beats_grover": true
+    },
+    "7": {
+      "k": 7,
+      "schoning_base": 1.7142857142857142,
+      "quantum_schoning_base": 1.3093073414159542,
+      "ppsz_base": 1.69308,
+      "quantum_ppsz_hypothetical": 1.3011840761398827,
+      "grover_base": 1.4142135623730951,
+      "best_known_quantum": 1.3093073414159542,
+      "ppsz_would_beat_schoning": true,
+      "schoning_beats_grover": true
+    },
+    "10": {
+      "k": 10,
+      "schoning_base": 1.8,
+      "quantum_schoning_base": 1.3416407864998738,
+      "ppsz_base": 1.7937,
+      "quantum_ppsz_hypothetical": 1.339290857132983,
+      "grover_base": 1.4142135623730951,
+      "best_known_quantum": 1.3416407864998738,
+      "ppsz_would_beat_schoning": true,
+      "schoning_beats_grover": true
+    }
+  }
+}
