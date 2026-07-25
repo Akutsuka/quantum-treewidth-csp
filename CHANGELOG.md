@@ -2,6 +2,31 @@
 
 All notable changes to this project are documented here.
 
+## [v0.4] — 2026-07-26
+
+### Crystallized: Self-Review (11 Issues)
+
+Systematic hostile self-review identifying 2 potentially fatal, 3 serious, and 6 moderate/minor issues. All addressed.
+
+**Potentially fatal — fixed:**
+- Theorem 3 (QSETH lower bound): Added Remark 3 explicitly noting the proof only bites when pw = Θ(n). Does not rule out hybrid runtimes g(n)·h(pw) where g(n) ≥ 2^{n/2} and h(pw) < (√2)^pw. Proving a lower bound in the pw ≪ n regime remains open.
+- Proposition 3 (depth-1 upper bound): Added remark acknowledging star decompositions are already classically easy. Value is tightness of QSETH bound, not practical speedup.
+
+**Serious — fixed:**
+- Memoization obstruction (§4.2): Rewrote interpretation to acknowledge resource asymmetry (poly-space quantum vs exp-space classical). Precise content: "amplitude amplification is orthogonal to memoization" — when both sides get exp-space, quantum doesn't help with table construction because it's deterministic, not search.
+- Oracle-vs-process definitions (§6.2): Sharpened to address the PPSZ closed-form issue. Distinction is now product structure of individual trials (Schöning: iid) vs sequential dependence (PPSZ: adaptive). Both definitions explicitly marked as informal.
+- Theorem 2 → Observation 2: Downgraded from "Theorem" to "Observation" — it's a direct corollary of Markov-Shi (2008), not a new result. Value is the implication in the treewidth-CSP setting.
+
+**Moderate — fixed:**
+- Precomputation speedup numbers (Proposition 2): Added caveat that 19×/5× are asymptotic cost-model ratios, not implementable gains. Cites Campbell-Khurana-Montanaro (2019) on practical overhead.
+- Novelty claim softened: Introduction now acknowledges Kļevickis et al. and Ambainis et al. as adjacent work rather than claiming the question is entirely unposed.
+
+**Minor — fixed:**
+- Validation = cost models: Added note to abstract clarifying code validates cost-model algebra, not quantum mechanics.
+- Pathwidth vs treewidth: Added distinction to Preliminaries with pw ≤ w·O(log n) bound, primal/incidence/dual clarification, and note that pathwidth lower bounds are weaker than treewidth lower bounds.
+- Tovey's theorem: Added to §9.3 as classical evidence that bounded local structure (few constraints per variable) does not ensure tractability.
+- 6 new references: Tovey (1984), Høyer-Mosca-de Wolf (2003), Samer-Szeider (2010), Bennett (1973), de Colnet et al. (2026), Zalka (1999).
+
 ## [v0.3] — 2026-07-26
 
 ### Revised: Reviewer Feedback
