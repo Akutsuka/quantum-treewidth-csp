@@ -2,6 +2,23 @@
 
 All notable changes to this project are documented here.
 
+## [v0.5] — 2026-07-26
+
+### MAJOR CORRECTION: Retract Oracle-vs-Process, Prove Universal Quadratic Speedup
+
+**The oracle-vs-process classification (§6 in v0.1–v0.4) was incorrect and has been retracted.**
+
+The paper previously claimed PPSZ "resists" quantum speedup due to "process-shaped randomness." This was wrong. PPSZ admits full quadratic speedup via naive amplitude amplification: each trial is a deterministic function of (π, random_bits), implementable reversibly in poly(n) time (Bennett 1973), so Brassard–Høyer–Mosca–Tapp AA applies directly. Quantum PPSZ gives O\*(1.143^n) for 3-SAT, **beating** quantum Schöning (O\*(1.155^n)).
+
+The error arose from confusing Rennela et al.'s "partial speedup of internal subroutines" (exploring gains *beyond* naive AA) with "PPSZ resists AA" (which is false).
+
+**Replacements:**
+- Former §6 (Oracle-vs-Process Dichotomy) → New §6 (Universal Quadratic Speedup and Its Limits)
+- New Theorem 2: ALL classical randomized SAT algorithms with poly-time trials admit full quadratic quantum speedup (formal proof via Bennett + BHMT AA)
+- Corrected k-SAT table: quantum PPSZ is best known for all k ≥ 3
+- Correct open question: "can quantum beat √(classical base)?"
+- Explicit erratum acknowledging the retracted classification
+
 ## [v0.4] — 2026-07-26
 
 ### Crystallized: Self-Review (11 Issues)
