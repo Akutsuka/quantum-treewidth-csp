@@ -39,14 +39,6 @@ python code/treewidth_quantum_sim.py --quick
 
 3. **OR/AND asymmetry**: Tree-decomposition DP interleaves forget nodes (OR — Grover helps) and join nodes (AND — no speedup). At depth ≥ 2, compounding AND costs overwhelm Grover savings.
 
-## Honest assessment of novelty
-
-This is a synthesis paper. Most components are applications of known results. The contribution is:
-- Posing the question (how does treewidth interact with AA?)
-- Connecting known tools to answer it systematically
-- Theorem 1 applied to PPSZ (small but underappreciated observation)
-- The Gap Question (well-posed open problem at c ∈ [1/2, 1])
-- Correcting our own earlier error (the retracted oracle-vs-process classification)
 
 ## File structure
 
