@@ -1,64 +1,70 @@
 # Classical Structure Meets Quantum Search
 
-Research package for the paper: *"How Treewidth and Constraint-Language Algebra Modulate Amplitude Amplification"*
+**How Treewidth and Constraint-Language Algebra Modulate Amplitude Amplification**
+
+A framework and synthesis paper connecting existing tools (amplitude amplification, quantum backtracking, QSETH, tensor-network simulation) to answer a question that has not been explicitly studied: how does classical problem structure interact with quantum speedups for constraint satisfaction problems?
 
 ## Quick Start
 
 ```bash
-# Propositions 1-2, Theorems 1-2 (cost models, memoization, precomputation):
-python code/treewidth_quantum_sim.py --plot --json results/validation_results.json
+# Core analysis (Propositions 1-2, Observations 1-2):
+python code/treewidth_quantum_sim.py --plot
 
-# Theorems 3-4, Gap Theorem (QSETH lower bound, depth crossover):
+# QSETH bounds and gap analysis (Theorems 1-2, Analysis 1):
 python code/qseth_bounds.py --plot
 
 # Quick sanity check:
 python code/treewidth_quantum_sim.py --quick
 ```
 
-## Results (7 theorems/propositions)
+## Results
 
-| # | Result | What it says | Validated by |
-|---|--------|-------------|--------------|
-| P1 | Poly-space quadratic speedup | Quantum backtracking halves the dominant exponent of unmemoized treewidth DP | `treewidth_quantum_sim.py` |
-| T1 | Memoization obstruction | Classical memoized DP beats quantum backtracking for d≥3, w≥1 | `treewidth_quantum_sim.py` |
-| P2 | Precomputation tradeoff | Ambainis-style hybrid gives moderate constant-factor speedups | `treewidth_quantum_sim.py` |
-| §6 | Oracle-vs-process dichotomy | Schöning quantizes fully; PPSZ resists (structural explanation) | `treewidth_quantum_sim.py` |
-| T2 | Simulability barrier | Structure-respecting circuits are classically simulable (Markov-Shi) | `treewidth_quantum_sim.py` |
-| **T3** | **QSETH lower bound** | **c ≥ 1/2: no quantum algorithm beats O*((√2)^pw) for pathwidth-parameterized SAT** | `qseth_bounds.py` |
-| **T4** | **Depth-dependent crossover** | **c = 1/2 at depth 1; quantum WORSE than classical at depth ≥ 2** | `qseth_bounds.py` |
+| # | Name | Type | What it says |
+|---|------|------|-------------|
+| P1 | Poly-space quadratic speedup | Application of Montanaro 2018 | Quantum backtracking halves the exponent of unmemoized treewidth DP |
+| O1 | Memoization orthogonality | Observation | AA doesn't speed up deterministic table construction; quantum search is orthogonal to memoization |
+| P2 | Precomputation tradeoff | Application of Ambainis et al. 2019 | Hybrid classical/quantum yields moderate cost-model improvements (not practical predictions) |
+| **T1** | **Universal quadratic speedup** | **Theorem (Bennett + BHMT)** | **All randomized SAT algorithms with poly-time trials quantize to √(base); quantum PPSZ = O\*(1.143^n)** |
+| O2 | Simulability barrier | Corollary of Markov-Shi 2008 | Structure-respecting circuits are classically simulable |
+| **T2** | **QSETH lower bound** | **Conditional theorem** | **c ≥ 1/2 in O\*(d^{cw}) for pathwidth-parameterized SAT (bites at pw=Θ(n) only)** |
+| P3+A1 | Depth analysis + Gap Question | Analysis of one algorithm | Recursive Grover achieves c=1/2 at depth 1, fails at depth ≥ 2; c ∈ [1/2, 1] is open |
 
-## The Gap Theorem
+## The central finding
 
-```
-  ┌─────────────────────────────────────────────────────────┐
-  │  LOWER BOUND (QSETH):          c ≥ 1/2                │
-  │  UPPER BOUND (depth-1):         c = 1/2  (achieved)    │
-  │  UPPER BOUND (general, D ≥ 2):  c = 1    (classical)   │
-  │                                                         │
-  │  GAP:  c ∈ [1/2, 1]  for general decompositions       │
-  │  STATUS: OPEN — no c < 1 known for D ≥ 2              │
-  └─────────────────────────────────────────────────────────┘
-```
+**Bounded treewidth hurts quantum speedups more than it helps.** Three mechanisms:
 
-**Why the gap exists (OR/AND asymmetry):** Tree-decomposition DP interleaves forget nodes (OR — Grover gives √d) and join nodes (AND — no quantum speedup). At depth 1 there's one OR and no compounding; at depth ≥ 2 the compound AND costs overwhelm the Grover savings.
+1. **Memoization orthogonality**: Classical DP exploits tree structure via memoization (deterministic table-building). Quantum search accelerates search, not deterministic computation. The two optimizations target different bottlenecks.
+
+2. **Simulability barrier**: Quantum circuits that mirror instance treewidth are classically simulable (Markov-Shi). Exploiting structure requires structure-respecting circuits, but those are exactly the ones classical simulation catches.
+
+3. **OR/AND asymmetry**: Tree-decomposition DP interleaves forget nodes (OR — Grover helps) and join nodes (AND — no speedup). At depth ≥ 2, compounding AND costs overwhelm Grover savings.
+
+## Honest assessment of novelty
+
+This is a synthesis paper. Most components are applications of known results. The contribution is:
+- Posing the question (how does treewidth interact with AA?)
+- Connecting known tools to answer it systematically
+- Theorem 1 applied to PPSZ (small but underappreciated observation)
+- The Gap Question (well-posed open problem at c ∈ [1/2, 1])
+- Correcting our own earlier error (the retracted oracle-vs-process classification)
 
 ## File structure
 
 ```
 ├── README.md
-├── paper.md                               # Full paper (Sections 1-12)
+├── CHANGELOG.md
+├── paper.md                               # Full paper
 ├── code/
-│   ├── treewidth_quantum_sim.py           # Validates P1, T1, P2, §6, T2
-│   └── qseth_bounds.py                   # Validates T3, T4, Gap Theorem
+│   ├── treewidth_quantum_sim.py           # Validates P1, O1, P2, O2
+│   └── qseth_bounds.py                   # Validates T2, P3, A1, Gap Question
 └── results/
     ├── validation_results.json
     ├── scaling_comparison.png             # Figure 1
-    ├── schoning_ppsz_asymmetry.png        # Figure 2
+    ├── schoning_ppsz_asymmetry.png        # Figure 2 (pre-correction; shows old table)
     ├── precomputation_tradeoff.png        # Figure 3
     └── qseth_gap_analysis.png            # Figure 4
 ```
 
 ## Requirements
 
-- Python 3.8+, numpy
-- matplotlib (optional, for `--plot`)
+Python 3.8+, numpy. Optional: matplotlib (for `--plot`).

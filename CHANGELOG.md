@@ -2,6 +2,28 @@
 
 All notable changes to this project are documented here.
 
+## [v0.6] — 2026-07-28
+
+### Hardened: Hostile Review Response
+
+Addressed a hostile but largely fair Reviewer 2 critique by downgrading overclaimed results and being transparent about the paper's nature.
+
+**Structural reframing:**
+- §1.1 renamed from "Our contributions" to "Nature of contribution" with explicit statement: "This is a framework and synthesis paper, not a deep-theorems paper."
+- Every result now includes an inline honesty assessment of its novelty
+
+**Downgraded claims:**
+- "Memoization Obstruction" (Theorem 1) → "Memoization Orthogonality" (Observation 1): it's a tautology (AA doesn't speed up deterministic computation), not a deep barrier. Resource asymmetry caveat retained.
+- "Simulability Barrier" (Theorem 2) → Observation 2: direct corollary of Markov-Shi 2008
+- "Gap Conjecture" → "Gap Question": failure of one naïve algorithm is weak evidence for a universal barrier
+- Former "Theorem 2" (Universal QS) → Theorem 1, former "Theorem 3" (QSETH) → Theorem 2
+- Proposition 2 speedup numbers (19×, 5×) removed; replaced with caveat that constant-factor cost-model ratios should not be interpreted as practical predictions
+
+**Consistency pass:**
+- All code files (treewidth_quantum_sim.py, qseth_bounds.py) updated to match new numbering
+- README rewritten with full honesty assessment
+- All cross-references in paper.md verified
+
 ## [v0.5] — 2026-07-26
 
 ### MAJOR CORRECTION: Retract Oracle-vs-Process, Prove Universal Quadratic Speedup

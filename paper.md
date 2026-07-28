@@ -2,7 +2,7 @@
 
 ---
 
-**Abstract.** We investigate how classical problem structure — measured by treewidth (width parameters of constraint hypergraphs) and constraint-language algebra (polymorphisms, Schaefer-type dichotomies) — interacts with quantum amplitude amplification for constraint satisfaction problems (CSPs). We establish seven results. *First* (Proposition 1), in the polynomial-space regime, quantum backtracking (Montanaro 2018) achieves a quadratic speedup over classical recursion for treewidth-*w* CSPs over domain *d*: the dominant exponent halves from (*w*+1)·log *d* to (*w*+1)·(log *d*)/2. *Second* (Theorem 1, the Memoization Obstruction), in the exponential-space regime, this quantum algorithm is *asymptotically slower* than classical memoized dynamic programming for all *d* ≥ 3, *w* ≥ 1. *Third* (Proposition 2), we adapt the Ambainis et al. (SODA 2019) precomputation/Grover hybrid to tree-decomposition DP, identifying a regime-dependent speedup. *Fourth* (Theorem 2, Universal Quadratic Speedup), we prove that *all* classical randomized SAT algorithms with poly-time trials admit full quadratic quantum speedup via amplitude amplification — correcting an earlier informal classification — and show as a corollary that quantum PPSZ achieves O\*(1.143^*n*) for 3-SAT, beating quantum Schöning. *Fifth* (Observation 3, the Simulability Barrier), any quantum circuit whose interaction graph has treewidth O(*w*) is classically simulable in time 2^{O(*w*)} · poly(*n*), erasing quantum advantage precisely when structure is strongest. *Sixth* (Theorem 3, QSETH Lower Bound), we prove conditionally that the exponent constant *c* in O\*(*d*^{*cw*}) satisfies *c* ≥ 1/2: no quantum algorithm can solve primal-pathwidth-parameterized SAT in time O\*((√2 − ε)^{pw}). *Seventh*, we analyze the naïve recursive Grover strategy on tree decompositions, showing it achieves *c* = 1/2 for depth-1 (star) decompositions (Proposition 3) but is provably slower than classical memoized DP at depth *D* ≥ 2 (Analysis 1). This motivates the **Gap Conjecture**: for general tree decompositions, the optimal quantum exponent *c* lies in [1/2, 1], with *c* = 1/2 tight at depth 1 (matching the QSETH lower bound) and *c* = 1 the best known for *D* ≥ 2. We carefully separate the conditional theorem (about all quantum algorithms) from the analysis (about one specific strategy) and the conjecture (about the optimal *c*). The gap is explained by an OR/AND asymmetry in tree-decomposition DP: Grover accelerates the OR (forget/search) operations but leaves the AND (join/verify) operations unchanged, and the compounding AND costs overwhelm the OR savings once decomposition depth exceeds 1.
+**Abstract.** We investigate how classical problem structure — measured by treewidth (width parameters of constraint hypergraphs) and constraint-language algebra (polymorphisms, Schaefer-type dichotomies) — interacts with quantum amplitude amplification for constraint satisfaction problems (CSPs). We establish seven results. *First* (Proposition 1), in the polynomial-space regime, quantum backtracking (Montanaro 2018) achieves a quadratic speedup over classical recursion for treewidth-*w* CSPs over domain *d*: the dominant exponent halves from (*w*+1)·log *d* to (*w*+1)·(log *d*)/2. *Second* (Observation 1, Memoization Orthogonality), in the exponential-space regime, this quantum algorithm is *asymptotically slower* than classical memoized dynamic programming for all *d* ≥ 3, *w* ≥ 1. *Third* (Proposition 2), we adapt the Ambainis et al. (SODA 2019) precomputation/Grover hybrid to tree-decomposition DP, identifying a regime-dependent speedup. *Fourth* (Theorem 1, Universal Quadratic Speedup), we prove that *all* classical randomized SAT algorithms with poly-time trials admit full quadratic quantum speedup via amplitude amplification — correcting an earlier informal classification — and show as a corollary that quantum PPSZ achieves O\*(1.143^*n*) for 3-SAT, beating quantum Schöning. *Fifth* (Observation 2, the Simulability Barrier), any quantum circuit whose interaction graph has treewidth O(*w*) is classically simulable in time 2^{O(*w*)} · poly(*n*), erasing quantum advantage precisely when structure is strongest. *Sixth* (Theorem 2, QSETH Lower Bound), we prove conditionally that the exponent constant *c* in O\*(*d*^{*cw*}) satisfies *c* ≥ 1/2: no quantum algorithm can solve primal-pathwidth-parameterized SAT in time O\*((√2 − ε)^{pw}). *Seventh*, we analyze the naïve recursive Grover strategy on tree decompositions, showing it achieves *c* = 1/2 for depth-1 (star) decompositions (Proposition 3) but is provably slower than classical memoized DP at depth *D* ≥ 2 (Analysis 1). This motivates the **Gap Question**: for general tree decompositions, the optimal quantum exponent *c* lies in [1/2, 1], with *c* = 1/2 tight at depth 1 (matching the QSETH lower bound) and *c* = 1 the best known for *D* ≥ 2. We carefully separate the conditional theorem (about all quantum algorithms) from the analysis (about one specific strategy) and the conjecture (about the optimal *c*). The gap is explained by an OR/AND asymmetry in tree-decomposition DP: Grover accelerates the OR (forget/search) operations but leaves the AND (join/verify) operations unchanged, and the compounding AND costs overwhelm the OR savings once decomposition depth exceeds 1.
 
 Our central finding is that **bounded treewidth hurts quantum speedups more than it helps**: the structure enabling classical tractability (memoization, bounded-width DP) is precisely the structure neutralizing quantum advantages (simulability, oracle-composition barriers). Quantum advantage is maximized for *intermediate* structure — enough regularity to outperform unstructured Grover search, insufficient for classical DP to dominate.
 
@@ -18,23 +18,25 @@ Two classical theories precisely characterize this structure. *Treewidth* (Rober
 
 We ask: **how does this classical structure modulate the speedup achievable by quantum amplitude amplification?** This question sits at the intersection of three active research programmes — quantum fine-grained complexity (QSETH: Buhrman–Patro–Speelman 2021), quantum parameterized complexity (FPQT: Bremner et al. 2022), and quantum speedups of exponential-time dynamic programming (Ambainis et al. 2019; Kļevickis–Prūsis–Vihrovs 2022). While each of these programmes contains results adjacent to our question (Kļevickis et al. compute treewidth using quantum DP; Ambainis et al. accelerate DP over subset lattices), the specific question of quantum speedups for CSPs *parameterized by treewidth* — targeting the base of *d*^*w* rather than the exponent of *n* — has not, to our knowledge, been posed in this form.
 
-### 1.1 Our contributions
+### 1.1 Nature of contribution
 
-We give the first systematic analysis of this interaction, organized around five results:
+**This is a framework and synthesis paper, not a deep-theorems paper.** Its contribution is posing a question that has not been explicitly studied — how treewidth and constraint-language structure modulate quantum amplitude amplification — and systematically connecting existing tools (amplitude amplification, quantum backtracking, QSETH, tensor-network simulation) to answer it. Most individual components are applications or restatements of known results; the value lies in the synthesis and in identifying the structural reasons why quantum advantage is elusive in this setting.
 
-1. **Proposition 1 (Poly-Space Quadratic Speedup).** Quantum backtracking halves the dominant exponent of classical polynomial-space treewidth recursion.
+We organize the analysis around the following results, stated with honest assessments of their novelty:
 
-2. **Theorem 1 (Memoization Obstruction).** Classical memoized DP is asymptotically faster than quantum backtracking for bounded treewidth — the speedup from Proposition 1 evaporates when classical algorithms are allowed exponential space.
+1. **Proposition 1 (Poly-Space Quadratic Speedup).** Quantum backtracking (Montanaro 2018) halves the dominant exponent of classical polynomial-space treewidth recursion. *This is a direct application of Montanaro's theorem to a known recursion tree. The observation is straightforward; the value is contextual.*
 
-3. **Proposition 2 (Precomputation Tradeoff).** A hybrid classical-precomputation / Grover-search strategy adapted from subset-lattice DP to tree-decomposition DP can beat classical exponential-space DP by moderate constant factors.
+2. **Observation 1 (Memoization Orthogonality).** When both classical and quantum algorithms are granted exponential space, quantum search provides no speedup on treewidth DP, because the bottleneck (table construction) is deterministic computation, not search. Amplitude amplification is orthogonal to memoization. *This is a tautology once stated clearly — quantum search accelerates search, not deterministic computation — but it explains why no quantum treewidth-DP speedup has been found.*
 
-4. **Theorem 2 (Universal Quadratic Speedup).** We prove that *all* classical randomized SAT algorithms with poly-time trials admit a full quadratic quantum speedup via amplitude amplification, formalizing and correcting an earlier informal classification. An immediate corollary: quantum PPSZ achieves O\*(1.143^*n*) for 3-SAT, beating quantum Schöning's O\*(1.155^*n*).
+3. **Proposition 2 (Precomputation Tradeoff).** A hybrid classical-precomputation / Grover-search strategy adapted from Ambainis et al. (SODA 2019) to tree-decomposition DP yields moderate asymptotic cost-model improvements at specific parameters. *These improvements are unlikely to survive fault-tolerance overhead (Campbell–Khurana–Montanaro 2019) and should not be interpreted as practical predictions.*
 
-5. **Observation 3 (Simulability Barrier).** Structure-respecting quantum circuits are classically simulable (a corollary of Markov–Shi 2008, articulated here in the treewidth-CSP setting), creating a no-man's-land where quantum advantage is provably absent.
+4. **Theorem 1 (Universal Quadratic Speedup).** All classical randomized SAT algorithms with poly-time trials admit a full quadratic quantum speedup via amplitude amplification. Corollary: quantum PPSZ achieves O\*(1.143^*n*) for 3-SAT, beating quantum Schöning's O\*(1.155^*n*). *This is a direct consequence of Bennett (1973) + Brassard–Høyer–Mosca–Tapp (2002), implicit since Dantsin–Kreinovich–Wolpert (2005). We state it because its application to PPSZ appears underappreciated, and because an earlier draft of this paper incorrectly claimed PPSZ resisted quantization.*
 
-6. **Theorem 3 (QSETH Lower Bound).** Under QSETH, the exponent constant *c* in O\*(*d*^{*cw*}) satisfies *c* ≥ 1/2 — no quantum algorithm solves primal-pathwidth-parameterized SAT faster than O\*((√2)^{pw}). This is a conditional theorem about *all* quantum algorithms.
+5. **Observation 2 (Simulability Barrier).** Quantum circuits whose interaction graph has treewidth O(*w*) are classically simulable in time 2^{O(*w*)} · poly(*n*). *This is a direct corollary of Markov–Shi (SICOMP 2008), not a new result. We restate it because its implication — that structure-respecting quantum circuits cannot provide advantage — has not been articulated in the treewidth-CSP context.*
 
-7. **Analysis of Recursive Grover + Gap Conjecture.** The naïve recursive Grover strategy achieves *c* = 1/2 at decomposition depth 1 (Proposition 3) but fails at depth ≥ 2 (Analysis 1). This motivates the Gap Conjecture: *c* ∈ [1/2, 1] for general decompositions, with the gap explained by the OR/AND asymmetry. We carefully separate the rigorous lower bound (Theorem 3) from the analysis of one algorithm (Analysis 1) and the resulting conjecture.
+6. **Theorem 2 (QSETH Lower Bound).** Under QSETH, the exponent constant *c* in O\*(*d*^{*cw*}) satisfies *c* ≥ 1/2 for primal-pathwidth-parameterized SAT. *This is a clean conditional result, but it only constrains algorithms in the pw = Θ(n) regime (see Remark 3, §8.1). It serves as a sanity-check baseline rather than a deep structural barrier.*
+
+7. **Analysis of Recursive Grover + Open Question.** The naïve recursive Grover strategy achieves *c* = 1/2 at decomposition depth 1 (Proposition 3) but fails at depth ≥ 2 (Analysis 1). This motivates an open question — whether *c* < 1 is achievable by *any* quantum algorithm for general decompositions — but we emphasize that the failure of one naïve algorithm is weak evidence for a universal barrier. The OR/AND asymmetry (§8.4) is a structural explanation for why *this specific algorithm* fails, not a proof that all algorithms must fail.
 
 ### 1.2 Scope and demarcation
 
@@ -56,7 +58,7 @@ The *width* of the decomposition is max_t |*B_t*| − 1, and the *treewidth* *w*
 
 **Balanced tree decompositions** (Bodlaender–Hagerup 1998): for any tree decomposition of width *w*, there exists one of width O(*w*) and depth O(log *n*). This enables space-efficient recursive evaluation (§3).
 
-**Pathwidth vs. treewidth.** A *path decomposition* is a tree decomposition whose underlying tree is a path. The *pathwidth* pw of an instance is the minimum width over all path decompositions. Since every path is a tree, pw ≥ *w*; more precisely, pw ≤ *w* · O(log *n*) (Bodlaender 1998). Lower bounds proved for pathwidth (such as Theorem 3) are therefore *weaker* than corresponding lower bounds for treewidth — they rule out less. Throughout this paper, "treewidth" and "pathwidth" refer to the *primal* graph (vertices = variables, edges = co-occurrence in a constraint) unless stated otherwise. Other variants (incidence treewidth, dual treewidth) can differ substantially (Samer–Szeider 2010).
+**Pathwidth vs. treewidth.** A *path decomposition* is a tree decomposition whose underlying tree is a path. The *pathwidth* pw of an instance is the minimum width over all path decompositions. Since every path is a tree, pw ≥ *w*; more precisely, pw ≤ *w* · O(log *n*) (Bodlaender 1998). Lower bounds proved for pathwidth (such as Theorem 2) are therefore *weaker* than corresponding lower bounds for treewidth — they rule out less. Throughout this paper, "treewidth" and "pathwidth" refer to the *primal* graph (vertices = variables, edges = co-occurrence in a constraint) unless stated otherwise. Other variants (incidence treewidth, dual treewidth) can differ substantially (Samer–Szeider 2010).
 
 ### 2.3 Amplitude amplification
 
@@ -104,11 +106,11 @@ The dominant exponent (*w*+1)·log₂*d* / 2 is exactly half the classical expon
 
 ---
 
-## 4. Theorem 1: The Memoization Obstruction
+## 4. Observation 1: Memoization Orthogonality
 
 ### 4.1 Statement
 
-**Theorem 1 (Memoization Obstruction).** *For any CSP with domain size d ≥ 2, treewidth w ≥ 1, and n sufficiently large (n > d^{2(w+1)}), the quantum backtracking algorithm of Proposition 1 (which uses polynomial space) is asymptotically slower than classical memoized dynamic programming (which uses O(n · d^{w+1}) space).*
+**Observation 1 (Memoization Orthogonality).** *For any CSP with domain size d ≥ 2, treewidth w ≥ 1, and n sufficiently large (n > d^{2(w+1)}), the quantum backtracking algorithm of Proposition 1 (which uses polynomial space) is asymptotically slower than classical memoized dynamic programming (which uses O(n · d^{w+1}) space).*
 
 *Proof.* Classical memoized DP costs O(*n* · *d*^{*w*+1}). As a function of *n*, this is *linear* in *n* times a constant depending on *w* and *d*:
 
@@ -118,7 +120,7 @@ Quantum backtracking costs (ignoring poly factors):
 
 > Quantum (poly-space): *n*^{(*w*+1)·log₂*d* / 2}
 
-Set α = (*w*+1)·log₂*d* / 2. We need *n*^α > *n* · *d*^{*w*+1} for the obstruction, i.e., *n*^{α−1} > *d*^{*w*+1}.
+Set α = (*w*+1)·log₂*d* / 2. We need *n*^α > *n* · *d*^{*w*+1} for the orthogonality comparison, i.e., *n*^{α−1} > *d*^{*w*+1}.
 
 Since α = (*w*+1)·log₂*d* / 2 and for *d* ≥ 2, *w* ≥ 1 we have α ≥ 1, the inequality *n*^{α−1} > *d*^{*w*+1} holds for all *n* > *d*^{(*w*+1)/(α−1)} when α > 1.
 
@@ -128,13 +130,13 @@ More precisely, for any fixed *d* ≥ 3 and *w* ≥ 1, there exists *N*(*d*,*w*)
 
 ### 4.2 Interpretation
 
-**Caveat on resource asymmetry.** Theorem 1 compares a poly-space quantum algorithm to an exp-space classical algorithm — an asymmetric comparison. When both algorithms are granted exponential space, the picture changes: a quantum algorithm with QRAM could store the same DP tables as the classical algorithm, then use Grover to search the final table in O(√(d^{w+1})) rather than O(d^{w+1}). The total cost would be O(*n* · *d*^{*w*+1}) for table construction plus O(*d*^{(*w*+1)/2}) for the final search — dominated by the construction phase, which is identical to classical DP. The precise content of the memoization obstruction is therefore: **when both sides use memoized DP, quantum search provides no speedup on the dominant (table-construction) cost.** The table construction is a deterministic computation, not a search, and Grover does not accelerate deterministic computation.
+**Caveat on resource asymmetry.** Observation 1 compares a poly-space quantum algorithm to an exp-space classical algorithm — an asymmetric comparison. When both algorithms are granted exponential space, the picture changes: a quantum algorithm with QRAM could store the same DP tables as the classical algorithm, then use Grover to search the final table in O(√(d^{w+1})) rather than O(d^{w+1}). The total cost would be O(*n* · *d*^{*w*+1}) for table construction plus O(*d*^{(*w*+1)/2}) for the final search — dominated by the construction phase, which is identical to classical DP. The precise content of the memoization orthogonality is therefore: **when both sides use memoized DP, quantum search provides no speedup on the dominant (table-construction) cost.** The table construction is a deterministic computation, not a search, and Grover does not accelerate deterministic computation.
 
 This is a weaker but more precise statement than "quantum is slower." The obstruction is not that quantum algorithms are inherently worse, but that the *specific advantage* of amplitude amplification (accelerating search) is orthogonal to the *specific advantage* of memoization (avoiding redundant computation). The two optimizations target different bottlenecks.
 
 ### 4.3 Numerical validation
 
-Our simulation confirms the memoization obstruction across all tested parameters (*d* ∈ {2,3,5,9}, *w* ∈ {1,2,3,5}). The crossover occurs at remarkably small *n* (typically *n* ≈ 4), reinforcing that this is not an asymptotic artifact but a practical reality.
+Our simulation confirms the memoization orthogonality across all tested parameters (*d* ∈ {2,3,5,9}, *w* ∈ {1,2,3,5}). The crossover occurs at remarkably small *n* (typically *n* ≈ 4), reinforcing that this is not an asymptotic artifact but a practical reality.
 
 ---
 
@@ -156,11 +158,11 @@ We adapt this to tree-decomposition DP. Given a balanced decomposition of depth 
 
 **Total cost:** 2^ℓ · *d*^{*w*+1} + *d*^{(*w*+1)·(*D*−ℓ)/2}
 
-**Proposition 2.** *The optimal cutoff level ℓ* balances these terms. For *n* = 1024, *d* = 2, *w* = 2, the hybrid achieves a 19× asymptotic cost-model ratio over classical exponential-space DP. For *d* = 9, *w* = 3, the ratio is 5×.*
+**Proposition 2.** *The optimal cutoff level ℓ* balances these terms, yielding a hybrid cost that can fall below the classical DP baseline at specific parameter settings.*
 
-*Proof.* By direct optimization over ℓ, validated numerically (see §Appendix, Table 2). Setting derivatives equal: the optimal ℓ* satisfies 2^{ℓ*} · *d*^{*w*+1} · ln 2 ≈ (*w*+1) · ln *d* / 2 · *d*^{(*w*+1)(D−ℓ*)/2} · ln *d*. For moderate parameters, ℓ* ≈ *D*/2 to 2*D*/3. □
+*Proof.* By direct optimization over ℓ (see validation code, §Appendix). The optimal ℓ* satisfies 2^{ℓ*} · *d*^{*w*+1} · ln 2 ≈ (*w*+1) · ln *d* / 2 · *d*^{(*w*+1)(D−ℓ*)/2} · ln *d*. For moderate parameters, ℓ* ≈ *D*/2 to 2*D*/3. □
 
-**Caveat on speedup numbers.** The ratios above compare asymptotic cost functions and ignore all constant factors, gate costs, error-correction overhead, and QRAM implementation costs. Campbell–Khurana–Montanaro (2019) showed that even Grover's quadratic speedup can vanish under realistic fault-tolerance assumptions at moderate problem sizes. These numbers represent asymptotic model ratios, not predictions of implementable gains.
+**Caveat.** The improvements are moderate asymptotic cost-model ratios, not asymptotic exponent improvements — the base *d*^*w* is unchanged. More importantly, Campbell–Khurana–Montanaro (2019) showed that even Grover's full quadratic speedup can vanish under realistic fault-tolerance assumptions. Constant-factor improvements from a cost model that ignores gate counts, error correction, and QRAM overhead should not be interpreted as practical predictions. We include Proposition 2 to characterize the theoretical landscape, not to claim practical advantage.
 
 ### 5.2 Limitations
 
@@ -170,11 +172,11 @@ The speedup is moderate (constant factors, not asymptotic exponent improvement) 
 
 ## 6. The Universal Quadratic Speedup and Its Limits
 
-### 6.1 Theorem 2: Universal Quadratic Speedup for Randomized SAT Algorithms
+### 6.1 Theorem 1: Universal Quadratic Speedup for Randomized SAT Algorithms
 
 An earlier draft of this paper proposed an "oracle-shaped vs. process-shaped" classification of randomized algorithms, arguing that algorithms like PPSZ resist quantum speedup while algorithms like Schöning quantize cleanly. **That classification was incorrect.** Both algorithms — and indeed all randomized algorithms in the relevant class — admit a full quadratic quantum speedup via amplitude amplification. We correct the record here and reframe the section around the right question.
 
-**Theorem 2 (Universal Quadratic Speedup).** *Let A be a classical randomized algorithm that solves k-SAT on n-variable, m-clause formulas in expected time O\*(c^n), where each execution of A (given its random bits) is implementable as a deterministic computation in time T(n, m) = poly(n, m). Then there exists a bounded-error quantum algorithm solving k-SAT in time O\*(c^{n/2}).*
+**Theorem 1 (Universal Quadratic Speedup).** *Let A be a classical randomized algorithm that solves k-SAT on n-variable, m-clause formulas in expected time O\*(c^n), where each execution of A (given its random bits) is implementable as a deterministic computation in time T(n, m) = poly(n, m). Then there exists a bounded-error quantum algorithm solving k-SAT in time O\*(c^{n/2}).*
 
 *Proof.* View A as a deterministic function of its random input *r*: A(*r*) = 1 if the execution with randomness *r* produces a satisfying assignment, 0 otherwise. By assumption, Pr_r[A(*r*) = 1] ≥ 1/c^n.
 
@@ -186,11 +188,11 @@ This reversible circuit implements the unitary |*r*⟩|0⟩ → |*r*⟩|A(*r*)�
 
 ### 6.2 Application: Quantum PPSZ beats quantum Schöning
 
-Applying Theorem 2 to the two main classical SAT algorithms:
+Applying Theorem 1 to the two main classical SAT algorithms:
 
-**Quantum Schöning.** Schöning's algorithm (1999) runs in O\*((2(k−1)/k)^n). By Theorem 2: O\*((2(k−1)/k)^{n/2}). For 3-SAT: O\*(1.155^n). (This is the result of Ambainis 2004.)
+**Quantum Schöning.** Schöning's algorithm (1999) runs in O\*((2(k−1)/k)^n). By Theorem 1: O\*((2(k−1)/k)^{n/2}). For 3-SAT: O\*(1.155^n). (This is the result of Ambainis 2004.)
 
-**Quantum PPSZ.** PPSZ (Paturi et al. 2005), with Hertli's (2014) improved analysis, runs in O\*(1.307^n) for 3-SAT. Each trial draws a random permutation π and random bits, then applies bounded-width resolution and variable-setting — a deterministic poly-time computation given (π, bits). By Theorem 2: O\*(1.307^{n/2}) = O\*(1.143^n).
+**Quantum PPSZ.** PPSZ (Paturi et al. 2005), with Hertli's (2014) improved analysis, runs in O\*(1.307^n) for 3-SAT. Each trial draws a random permutation π and random bits, then applies bounded-width resolution and variable-setting — a deterministic poly-time computation given (π, bits). By Theorem 1: O\*(1.307^{n/2}) = O\*(1.143^n).
 
 | *k* | Schöning | PPSZ | Q-Schöning | **Q-PPSZ** | Grover | Best known quantum |
 |-----|----------|------|------------|-----------|--------|-------------------|
@@ -206,13 +208,13 @@ Applying Theorem 2 to the two main classical SAT algorithms:
 
 ### 6.3 The correct open question
 
-Since every classical randomized algorithm with poly-time trials quantizes to √(base) by Theorem 2, the interesting question is not "which algorithms quantize" (they all do) but:
+Since every classical randomized algorithm with poly-time trials quantizes to √(base) by Theorem 1, the interesting question is not "which algorithms quantize" (they all do) but:
 
 **Open Question.** *Does there exist a quantum algorithm for k-SAT running in time O\*(c^n) with c < √c_{classical}, where c_{classical} is the base of the best classical algorithm?*
 
 Such an algorithm would need to exploit problem structure in a *fundamentally quantum* way — not merely amplifying a classical trial, but using interference, entanglement, or quantum walks to navigate the solution space more efficiently than any classical randomized algorithm. The Rennela et al. (2023) programme of quantum-accelerating internal subroutines (tree search, resolution) is one approach; it has yielded partial results but no unconditional improvement over the √(base) bound.
 
-**Relation to the treewidth question.** For treewidth-parameterized CSPs, the analogous question is: can quantum algorithms beat the √(d^w) = d^{w/2} base? Theorem 3 (§8.1) establishes d^{1/2} as a QSETH-conditional lower bound per unit of width, and Analysis 1 (§8.2) shows that recursive Grover fails to achieve even d^{cw} for any c < 1 at decomposition depth ≥ 2. The memoization obstruction (§4) provides the structural explanation: classical DP already exploits tree structure so thoroughly that quantum search has nothing left to accelerate.
+**Relation to the treewidth question.** For treewidth-parameterized CSPs, the analogous question is: can quantum algorithms beat the √(d^w) = d^{w/2} base? Theorem 2 (§8.1) establishes d^{1/2} as a QSETH-conditional lower bound per unit of width, and Analysis 1 (§8.2) shows that recursive Grover fails to achieve even d^{cw} for any c < 1 at decomposition depth ≥ 2. The memoization orthogonality (§4) provides the structural explanation: classical DP already exploits tree structure so thoroughly that quantum search has nothing left to accelerate.
 
 ---
 
@@ -220,7 +222,7 @@ Such an algorithm would need to exploit problem structure in a *fundamentally qu
 
 ### 7.1 Statement
 
-**Observation 3 (Simulability Barrier).** *Let I be a CSP instance with treewidth w. If a quantum algorithm for I produces a quantum circuit C whose interaction graph has treewidth O(w), then by Markov–Shi (SICOMP 2008; refined by Cheng et al. 2025 for rank-width), C is classically simulable in time 2^{O(w)} · poly(n). In particular, any quantum speedup over classical DP requires the circuit to have treewidth ω(w).*
+**Observation 2 (Simulability Barrier).** *Let I be a CSP instance with treewidth w. If a quantum algorithm for I produces a quantum circuit C whose interaction graph has treewidth O(w), then by Markov–Shi (SICOMP 2008; refined by Cheng et al. 2025 for rank-width), C is classically simulable in time 2^{O(w)} · poly(n). In particular, any quantum speedup over classical DP requires the circuit to have treewidth ω(w).*
 
 This is a direct corollary of the Markov–Shi tensor-network simulation theorem, not a new result. We state it here because its *implication* for our question — that structure-respecting quantum circuits are automatically classically simulable — has not been articulated in the treewidth-parameterized CSP setting.
 
@@ -242,15 +244,15 @@ Cheng–Wang–Deng–Chen–Ji (arXiv:2510.06775, 2025) and de Colnet et al. (a
 
 ---
 
-## 8. The QSETH Lower Bound, Recursive Grover Analysis, and the Gap Conjecture
+## 8. The QSETH Lower Bound, Recursive Grover Analysis, and the Gap Question
 
 This section contains one conditional theorem (§8.1), one analysis of a specific algorithmic strategy (§8.2), and one conjecture that the analysis motivates (§8.3). We are careful to separate these: the theorem is a statement about *all* quantum algorithms; the analysis concerns *one particular* algorithm; the conjecture extrapolates from the analysis to a broader claim that remains open.
 
-### 8.1 Theorem 3: QSETH Lower Bound
+### 8.1 Theorem 2: QSETH Lower Bound
 
 We work with the *primal pathwidth* of a CNF formula — the pathwidth of the graph whose vertices are variables and whose edges connect variables appearing in the same clause. This is the standard parameterization in the SETH/pathwidth literature (cf. "The Primal Pathwidth SETH," arXiv:2403.07239). All references to "pathwidth" below mean primal pathwidth unless stated otherwise.
 
-**Theorem 3.** *Assuming QSETH, for every ε > 0, there is no bounded-error quantum algorithm that, given a CNF formula φ on n variables together with a path decomposition of primal pathwidth pw, decides satisfiability of φ in time O((2^{1/2} − ε)^{pw} · poly(n)). The algorithm is required to work for all values of pw (not merely bounded pw). Equivalently, the exponent constant c in O\*(2^{c·pw}) satisfies c ≥ 1/2.*
+**Theorem 2.**  *Assuming QSETH, for every ε > 0, there is no bounded-error quantum algorithm that, given a CNF formula φ on n variables together with a path decomposition of primal pathwidth pw, decides satisfiability of φ in time O((2^{1/2} − ε)^{pw} · poly(n)). The algorithm is required to work for all values of pw (not merely bounded pw). Equivalently, the exponent constant c in O\*(2^{c·pw}) satisfies c ≥ 1/2.*
 
 *Proof.* Suppose for contradiction that such an algorithm *A* exists for some ε > 0.
 
@@ -268,7 +270,7 @@ where δ = 1/2 − log₂(√2 − ε) > 0 for any ε > 0 (since log₂(√2 −
 
 *Remark 2.* For general domain *d* ≥ 2, encoding each *d*-valued variable with ⌈log₂ *d*⌉ Boolean variables increases primal pathwidth by a factor of at most ⌈log₂ *d*⌉. The lower bound generalizes: no quantum algorithm achieves O\*(*d*^{*cw*}) with *c* < 1/2 for *d*-ary CSPs parameterized by primal pathwidth.
 
-*Remark 3 (Scope limitation).* The proof uses pw(φ) ≤ *n* − 1, which means the QSETH contradiction arises only from instances where pw = Θ(*n*) — the regime where pathwidth is not a useful parameter. For instances where pw ≪ *n* (the actual parameterized regime of interest), the theorem still formally applies (it constrains the function *f*(pw) in algorithms running in time *f*(pw) · poly(*n*)), but it does not rule out algorithms with runtime *g*(*n*) · *h*(pw) where *g*(*n*) ≥ 2^{*n*/2} provides the QSETH-compatible baseline and *h*(pw) < (√2)^{pw} provides a parameterized speedup. In other words, Theorem 3 constrains algorithms that are *purely* parameterized by pw, but does not constrain hybrid runtimes that also depend on *n* in a QSETH-compatible way. Proving a lower bound that bites in the pw ≪ *n* regime would require a fine-grained reduction producing *k*-SAT instances with pw = o(*n*), which the existing LMS/pw-SETH framework does not provide.
+*Remark 3 (Scope limitation).* The proof uses pw(φ) ≤ *n* − 1, which means the QSETH contradiction arises only from instances where pw = Θ(*n*) — the regime where pathwidth is not a useful parameter. For instances where pw ≪ *n* (the actual parameterized regime of interest), the theorem still formally applies (it constrains the function *f*(pw) in algorithms running in time *f*(pw) · poly(*n*)), but it does not rule out algorithms with runtime *g*(*n*) · *h*(pw) where *g*(*n*) ≥ 2^{*n*/2} provides the QSETH-compatible baseline and *h*(pw) < (√2)^{pw} provides a parameterized speedup. In other words, Theorem 2 constrains algorithms that are *purely* parameterized by pw, but does not constrain hybrid runtimes that also depend on *n* in a QSETH-compatible way. Proving a lower bound that bites in the pw ≪ *n* regime would require a fine-grained reduction producing *k*-SAT instances with pw = o(*n*), which the existing LMS/pw-SETH framework does not provide.
 
 ### 8.2 Analysis of Recursive Grover on Tree Decompositions
 
@@ -276,7 +278,7 @@ We now analyze the natural recursive Grover strategy applied to tree decompositi
 
 **Proposition 3 (Depth-1 Upper Bound).** *Let I be a CSP over domain [d] with a tree decomposition of width w and depth D = 1 (a star: one root bag with n leaf bags as children). Then satisfiability of I can be decided by a bounded-error quantum algorithm in time O(d^{(w+1)/2} · n · poly(w)), achieving c = 1/2 in O\*(d^{cw}).*
 
-**Remark on triviality.** Depth-1 decompositions represent instances where a single separator of *w*+1 variables connects *n* independent subproblems — instances that are already easy classically (O(*d*^{*w*+1} · *n*) by brute-forcing the separator). The value of Proposition 3 is not practical; it is that *c* = 1/2 is *achievable*, matching the QSETH lower bound (Theorem 3) and showing that the bound is tight for this subclass. The interesting instances have depth *D* = Θ(log *n*), where Analysis 1 shows recursive Grover fails.
+**Remark on triviality.** Depth-1 decompositions represent instances where a single separator of *w*+1 variables connects *n* independent subproblems — instances that are already easy classically (O(*d*^{*w*+1} · *n*) by brute-forcing the separator). The value of Proposition 3 is not practical; it is that *c* = 1/2 is *achievable*, matching the QSETH lower bound (Theorem 2) and showing that the bound is tight for this subclass. The interesting instances have depth *D* = Θ(log *n*), where Analysis 1 shows recursive Grover fails.
 
 *Proof.* In a star decomposition, the root bag contains *w*+1 variables and each leaf bag shares a subset of these with the root. Satisfiability reduces to: ∃σ ∈ [*d*]^{*w*+1} such that all leaf constraints are simultaneously satisfied given σ.
 
@@ -309,25 +311,25 @@ At *D* = 2 the costs are equal; at *D* ≥ 3 recursive Grover is strictly worse.
 
 **Important distinction.** Analysis 1 shows that *one particular quantum algorithm* (recursive Grover) fails to beat classical memoized DP at depth ≥ 2. It does *not* show that *no* quantum algorithm can do so. A different approach — for instance, one that interacts with the memoization structure itself, or that uses quantum walks rather than amplitude amplification — might achieve *c* < 1. The question of whether such an algorithm exists remains open.
 
-### 8.3 The Gap Conjecture
+### 8.3 The Gap Question
 
-Theorem 3 provides a rigorous lower bound; Analysis 1 provides evidence for the upper bound. Together they motivate:
+Theorem 2 provides a rigorous lower bound; Analysis 1 provides evidence for the upper bound. Together they motivate:
 
-**Gap Conjecture.** *For CSPs with primal treewidth w over domain d, the optimal quantum exponent c in O\*(d^{cw}) satisfies:*
+**Gap Question.** *For CSPs with primal treewidth w over domain d, the optimal quantum exponent c in O\*(d^{cw}) satisfies:*
 
 | Regime | Lower bound on *c* | Best known upper bound on *c* | Status |
 |--------|-------------------|------------------------------|--------|
-| General (any *D*) | 1/2 (QSETH, Thm 3) | 1 (classical DP) | **Open gap [1/2, 1]** |
-| Depth *D* = 1 | 1/2 (QSETH, Thm 3) | 1/2 (Prop. 3) | **Tight** |
-| Depth *D* ≥ 2 | 1/2 (QSETH, Thm 3) | 1 (classical DP) | **Open** |
+| General (any *D*) | 1/2 (QSETH, Thm 2) | 1 (classical DP) | **Open gap [1/2, 1]** |
+| Depth *D* = 1 | 1/2 (QSETH, Thm 2) | 1/2 (Prop. 3) | **Tight** |
+| Depth *D* ≥ 2 | 1/2 (QSETH, Thm 2) | 1 (classical DP) | **Open** |
 
-We conjecture that *c* = 1 is optimal for general decompositions of depth *D* ≥ 2 — that is, no quantum algorithm achieves *c* < 1 in this regime. The evidence for this conjecture comes from three independent sources: the memoization obstruction (Theorem 1, §4), the simulability barrier (Theorem 2, §7), and the failure of naïve recursive Grover (Analysis 1). However, we stress that each of these is evidence about a *specific* obstruction or algorithm, not a proof of impossibility.
+We conjecture that *c* = 1 is optimal for general decompositions of depth *D* ≥ 2 — that is, no quantum algorithm achieves *c* < 1 in this regime. The evidence for this conjecture comes from three independent sources: the memoization orthogonality (Observation 1, §4), the simulability barrier (Observation 2, §7), and the failure of naïve recursive Grover (Analysis 1). However, we stress that each of these is evidence about a *specific* obstruction or algorithm, not a proof of impossibility.
 
 **Closing the gap** would require either: (a) a quantum algorithm achieving *c* < 1 at depth ≥ 2, refuting the conjecture; or (b) a QSETH-conditional proof that *c* = 1 is necessary at depth ≥ 2, which would require a fine-grained reduction from *k*-SAT to bounded-treewidth instances with pw ≪ *n* — a reduction the existing LMS framework does not provide, since it produces instances with pw = Θ(*n*).
 
 ### 8.4 The OR/AND Asymmetry
 
-The Gap Conjecture is motivated by a structural observation about tree-decomposition DP. The computation interleaves two fundamentally different operations:
+The Gap Question is motivated by a structural observation about tree-decomposition DP. The computation interleaves two fundamentally different operations:
 
 - **Forget nodes** (existential quantification): OR over *d* domain values → Grover gives √*d* speedup per level.
 - **Join nodes** (universal verification): AND over child subtrees → no quantum speedup.
@@ -346,13 +348,13 @@ Classical structure and quantum amplitude amplification interact through three m
 
 **(a) The memoization effect.** Structure (bounded treewidth) enables classical DP with memoization, converting *n*^{Θ(*w*)} recursion into *n* · *d*^{O(*w*)} table-driven evaluation. Quantum search applied to the unmemoized recursion achieves a quadratic speedup over *that* baseline, but the memoized classical algorithm provides a *super-quadratic* speedup over the same baseline. When both sides are granted exponential space, quantum provides no speedup on the table-construction cost (§4.2). Net effect: **the specific advantage of amplitude amplification (accelerating search) is orthogonal to the specific advantage of memoization (avoiding redundant computation).**
 
-**(b) The simulability effect.** Structure-respecting quantum circuits (those whose interaction graph mirrors the instance treewidth) are classically simulable (Observation 3, via Markov–Shi), erasing any quantum advantage. Avoiding simulability requires high-entanglement circuits — but those cannot exploit instance structure. Net effect: **structure constrains circuit design, removing quantum advantage.**
+**(b) The simulability effect.** Structure-respecting quantum circuits (those whose interaction graph mirrors the instance treewidth) are classically simulable (Observation 2, via Markov–Shi), erasing any quantum advantage. Avoiding simulability requires high-entanglement circuits — but those cannot exploit instance structure. Net effect: **structure constrains circuit design, removing quantum advantage.**
 
-**(c) The precomputation tradeoff.** The Ambainis-style hybrid (classically precompute lower layers, Grover-search upper layers) partially circumvents (a), but the gains are moderate (constant factors at fixed parameters) and disappear as *d* or *w* grow. The memoization obstruction is softened, not eliminated. Net effect: **structure enables partial quantum gains, but sub-quadratic.**
+**(c) The precomputation tradeoff.** The Ambainis-style hybrid (classically precompute lower layers, Grover-search upper layers) partially circumvents (a), but the gains are moderate (constant factors at fixed parameters) and disappear as *d* or *w* grow. The memoization orthogonality is softened, not eliminated. Net effect: **structure enables partial quantum gains, but sub-quadratic.**
 
 ### 9.2 The central finding
 
-**Bounded treewidth hurts quantum speedups more than it helps.** The structure that makes a problem classically tractable — decomposability into bounded-width subproblems, enabling memoized DP — is precisely the structure that neutralizes quantum advantages, via both the memoization obstruction and the simulability barrier.
+**Bounded treewidth hurts quantum speedups more than it helps.** The structure that makes a problem classically tractable — decomposability into bounded-width subproblems, enabling memoized DP — is precisely the structure that neutralizes quantum advantages, via both the memoization orthogonality and the simulability barrier.
 
 Quantum advantage for CSPs is maximized in a *sweet spot* of intermediate structure:
 
@@ -362,7 +364,7 @@ Quantum advantage for CSPs is maximized in a *sweet spot* of intermediate struct
 
 ### 9.3 The Schaefer-landscape connection
 
-On the constraint-language side, by Theorem 2 (Universal Quadratic Speedup), the quantum exponent base for any NP-hard language Γ is at most √*c*_classical(Γ), where *c*_classical(Γ) is the base of the best classical randomized algorithm for CSP(Γ). The achievable quantum speedup therefore *inherits* the classical fine-grained landscape: languages where classical algorithms are faster (lower *c*_classical) also have faster quantum algorithms (lower √*c*_classical). There is no known case where quantum provides a *super-quadratic* speedup — i.e., achieving base strictly less than √*c*_classical — for any specific constraint language.
+On the constraint-language side, by Theorem 1 (Universal Quadratic Speedup), the quantum exponent base for any NP-hard language Γ is at most √*c*_classical(Γ), where *c*_classical(Γ) is the base of the best classical randomized algorithm for CSP(Γ). The achievable quantum speedup therefore *inherits* the classical fine-grained landscape: languages where classical algorithms are faster (lower *c*_classical) also have faster quantum algorithms (lower √*c*_classical). There is no known case where quantum provides a *super-quadratic* speedup — i.e., achieving base strictly less than √*c*_classical — for any specific constraint language.
 
 **Remark (Tovey's theorem and bounded locality).** Bounded constraint overlap does not ensure tractability even classically. Tovey (1984) showed that 3-SAT restricted to instances where every variable appears in at most 3 clauses remains NP-complete. This is a classical counterpart to our finding: "local-looking" constraint structure (few constraints per variable, analogous to bounded bag size) does not by itself reduce hardness. The structural parameters that *do* ensure tractability — treewidth (Freuder; Dechter–Pearl), polymorphisms (Schaefer; Bulatov–Zhuk) — are global, not local.
 
@@ -376,7 +378,7 @@ Babbush et al. (2021) and Campbell–Khurana–Montanaro (2019) have shown that 
 
 ### 10.2 Open questions
 
-1. **The width-parameterized upper bound (RQ1 proper).** Can the precomputation tradeoff of Proposition 2 be made asymptotic — i.e., is there *c* < 1 such that treewidth-*w* CSPs are solvable in O(*d*^{*cw*} · poly(*n*))? Our analysis suggests the memoization obstruction makes *c* = 1/2 impossible, but does not rule out *c* < 1. The Ambainis et al. subset-lattice analogy (1.817^*n* vs. 2^*n*) suggests *c* = log₂ 1.817 ≈ 0.862 as a plausible target.
+1. **The width-parameterized upper bound (RQ1 proper).** Can the precomputation tradeoff of Proposition 2 be made asymptotic — i.e., is there *c* < 1 such that treewidth-*w* CSPs are solvable in O(*d*^{*cw*} · poly(*n*))? Our analysis suggests the memoization orthogonality makes *c* = 1/2 impossible, but does not rule out *c* < 1. The Ambainis et al. subset-lattice analogy (1.817^*n* vs. 2^*n*) suggests *c* = log₂ 1.817 ≈ 0.862 as a plausible target.
 
 2. **QSETH-conditional treewidth lower bounds (RQ2).** Can Lokshtanov–Marx–Saurabh-style reductions be made coherence-compatible, yielding a quantum analogue of "no (2−ε)^{tw} algorithm under SETH"?
 
@@ -392,11 +394,11 @@ Our results are analytical, not algorithmic: we characterize the cost landscape 
 
 ## 11. Conclusion
 
-We have shown that the interaction between classical structure and quantum search is characterized by a fundamental tension: the structure that makes problems classically tractable is precisely the structure that neutralizes quantum advantages. This manifests through three reinforcing mechanisms — the memoization obstruction, the simulability barrier, and the oracle-composition challenge — that together explain why no width-parameterized quantum speedup has been found despite decades of work on both quantum algorithms and parameterized complexity.
+We have shown that the interaction between classical structure and quantum search is characterized by a fundamental tension: the structure that makes problems classically tractable is precisely the structure that neutralizes quantum advantages. This manifests through three reinforcing mechanisms — the memoization orthogonality, the simulability barrier, and the oracle-composition challenge — that together explain why no width-parameterized quantum speedup has been found despite decades of work on both quantum algorithms and parameterized complexity.
 
 The honest answer to our research question is therefore nuanced: bounded treewidth *enables* a quadratic quantum speedup in the polynomial-space regime (Proposition 1), but this regime is dominated by classical memoized DP, rendering the quantum speedup practically moot. Genuine quantum advantage lives in the intermediate-structure regime, where oracle-shaped algorithms like quantum Schöning can exploit partial regularity without triggering classical tractability.
 
-This finding has implications beyond CSPs: any computational domain where classical algorithms exploit decomposability (divide-and-conquer, dynamic programming, hierarchical methods) is likely to exhibit the same memoization obstruction, limiting quantum advantage to regimes where the classical structural exploitation is absent or incomplete.
+This finding has implications beyond CSPs: any computational domain where classical algorithms exploit decomposability (divide-and-conquer, dynamic programming, hierarchical methods) is likely to exhibit the same memoization orthogonality, limiting quantum advantage to regimes where the classical structural exploitation is absent or incomplete.
 
 ---
 
@@ -450,7 +452,7 @@ This finding has implications beyond CSPs: any computational domain where classi
 qrc_paper/
 ├── code/
 │   ├── treewidth_quantum_sim.py    # Validation: Propositions 1-2, Theorems 1-2
-│   └── qseth_bounds.py            # Validation: Theorems 3-4, Gap Theorem
+│   └── qseth_bounds.py            # Validation: Theorems 3-4, Gap Question
 ├── results/
 │   ├── validation_results.json     # Full numerical results
 │   ├── scaling_comparison.png      # Figure 1: cost scaling
@@ -467,7 +469,7 @@ qrc_paper/
 python code/treewidth_quantum_sim.py
 python code/treewidth_quantum_sim.py --plot --json results/validation_results.json
 
-# Theorems 3-4, Gap Theorem (QSETH lower bound, depth crossover, OR/AND):
+# Theorems 3-4, Gap Question (QSETH lower bound, depth crossover, OR/AND):
 python code/qseth_bounds.py
 python code/qseth_bounds.py --plot
 
@@ -487,17 +489,17 @@ python code/treewidth_quantum_sim.py --quick
 
 5. **Theorem 2 (§7):** Compares log₂ costs of Markov-Shi simulation, Grover, and classical DP across (w,n) pairs, identifying the barrier regime.
 
-6. **Theorem 3 (§8.1):** For each ε > 0, computes log₂(√2 − ε) and the resulting QSETH contradiction parameter δ, confirming every ε yields δ > 0.
+6. **Theorem 2 (§8.1):** For each ε > 0, computes log₂(√2 − ε) and the resulting QSETH contradiction parameter δ, confirming every ε yields δ > 0.
 
 7. **Theorem 4 (§8.2):** Computes quantum recursive Grover cost vs. classical memoized DP across decomposition depths D = 0..20, confirming quantum wins only at D ≤ 1.
 
-8. **Gap Theorem (§8.3):** Validates the depth-1 upper bound c = 0.500 across all (d, w) combinations, and generates the gap visualization (Figure 4).
+8. **Gap Question (§8.3):** Validates the depth-1 upper bound c = 0.500 across all (d, w) combinations, and generates the gap visualization (Figure 4).
 
 ### A.5 Interpreting the output
 
 - **✓ at Ratio ≈ 0.5:** Confirms Proposition 1 (quadratic speedup in dominant exponent). The ratio exceeds 0.5 at small parameters because poly-overhead terms (n^{3/2} · log n from Montanaro's theorem) contribute to the effective exponent; they become negligible as (w+1)·log₂d grows.
 
-- **✓ OBSTRUCTION:** Confirms Theorem 1 (memoization obstruction). The crossover at n ≈ 4 means classical DP dominates for essentially all practical instance sizes.
+- **✓ OBSTRUCTION:** Confirms Observation 1 (memoization orthogonality). The crossover at n ≈ 4 means classical DP dominates for essentially all practical instance sizes.
 
 - **✓ BEATS / ✗ WORSE:** For Proposition 2 (precomputation tradeoff), indicates whether the hybrid beats classical DP. All tested parameters show ✓ BEATS with speedups of 5–32×.
 

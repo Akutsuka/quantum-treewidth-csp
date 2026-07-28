@@ -369,7 +369,7 @@ def depth_dependent_upper_bound(
 
 def gap_characterization(verbose: bool = True) -> dict:
     """
-    The Gap Theorem.
+    The Gap Question.
     
     Combining Theorems A and B:
     

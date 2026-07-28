@@ -278,15 +278,15 @@ def validate_proposition_1(
 
 
 # ============================================================
-# SECTION 4: Memoization Obstruction Analysis
+# SECTION 4: Memoization Orthogonality Analysis
 # ============================================================
 
 def analyze_memoization_obstruction(
     verbose: bool = True
 ) -> dict:
-    """Analyzes the memoization obstruction (paper §4, Theorem 1).
+    """Analyzes the memoization orthogonality (paper §4, Observation 1).
     
-    Theorem 1: For any CSP with d ≥ 3 and w ≥ 1, quantum 
+    Observation 1: For any CSP with d ≥ 3 and w ≥ 1, quantum 
     backtracking over the poly-space recursion tree is 
     asymptotically slower than classical exponential-space DP.
     
@@ -306,7 +306,7 @@ def analyze_memoization_obstruction(
     if verbose:
         print("=" * 80)
         print("MEMOIZATION OBSTRUCTION ANALYSIS")
-        print("Theorem 1: Quantum backtracking vs. classical exp-space DP")
+        print("Observation 1: Quantum backtracking vs. classical exp-space DP")
         print("=" * 80)
         print()
     
@@ -575,7 +575,7 @@ def simulability_barrier_analysis(
 ) -> dict:
     """Analyzes the simulability barrier (paper §7, RQ5).
     
-    Theorem 3 (Simulability Barrier): If a quantum algorithm for 
+    Observation 2 (Simulability Barrier): If a quantum algorithm for 
     a treewidth-w CSP instance produces a quantum circuit whose 
     interaction graph has treewidth O(w), then by the Markov-Shi 
     theorem (SICOMP 2008), that circuit is classically simulable 
@@ -797,7 +797,7 @@ def generate_summary(verbose: bool = True) -> dict:
         print("exponent halves from (w+1)·log₂d to (w+1)·log₂d / 2.")
         print("This is a genuine, unstated-in-prior-literature result.")
         print()
-        print("FINDING 2 — The Memoization Obstruction (Theorem 1)")
+        print("FINDING 2 — Memoization Orthogonality (Observation 1)")
         print("-" * 60)
         print("In the exponential-space regime (standard treewidth DP),")
         print("quantum backtracking is WORSE than classical DP for any")
@@ -825,7 +825,7 @@ def generate_summary(verbose: bool = True) -> dict:
         print("quantize; those whose randomness is 'process-shaped' (adaptive")
         print("state modification) resist.")
         print()
-        print("FINDING 5 — The Simulability Barrier (Theorem 3)")
+        print("FINDING 5 — Simulability Barrier (Observation 2)")
         print("-" * 60)
         print("Any quantum circuit whose interaction graph mirrors the instance")
         print("treewidth is classically simulable (Markov-Shi), erasing quantum")
@@ -856,7 +856,7 @@ def generate_summary(verbose: bool = True) -> dict:
     
     return {
         'proposition_1': 'Quadratic speedup in poly-space regime confirmed',
-        'theorem_1': 'Memoization obstruction holds for d≥3, w≥1',
+        'observation_1': 'Memoization orthogonality holds for d≥3, w≥1',
         'proposition_2': 'Precomputation tradeoff yields regime-dependent gains',
         'rq3': 'Schöning/PPSZ asymmetry explained by oracle-vs-process structure',
         'theorem_3': 'Simulability barrier constrains circuit treewidth',
